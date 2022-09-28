@@ -1,0 +1,25 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "commitConvention": "angular",
+  "contributors": [
+    {
+      "login": "mamadou-niakate",
+      "name": "Mamadou Niakaté",
+      "avatar_url": "https://avatars.githubusercontent.com/u/51120277?v=4",
+      "profile": "http://niakate.netlify.app",
+      "contributions": [
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "skipCi": true,
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "projectName": "video-player-client",
+  "projectOwner": "Kodians"
+}
