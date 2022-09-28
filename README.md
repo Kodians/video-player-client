@@ -1,6 +1,6 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## Getting Started
@@ -46,6 +46,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
     <tr>
       <td align="center"><a href="http://niakate.netlify.app"><img src="https://avatars.githubusercontent.com/u/51120277?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Mamadou Niakaté</b></sub></a><br /><a href="https://github.com/Kodians/video-player-client/commits?author=mamadou-niakate" title="Code">💻</a></td>
       <td align="center"><a href="https://github.com/metmetal"><img src="https://avatars.githubusercontent.com/u/33979550?v=4?s=100" width="100px;" alt=""/><br /><sub><b>metmetal</b></sub></a><br /><a href="https://github.com/Kodians/video-player-client/commits?author=metmetal" title="Code">💻</a></td>
+      <td align="center"><a href="https://konatedanko.netlify.app/"><img src="https://avatars.githubusercontent.com/u/47424583?v=4?s=100" width="100px;" alt=""/><br /><sub><b>dankokonate</b></sub></a><br /><a href="https://github.com/Kodians/video-player-client/commits?author=dankokonate" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>

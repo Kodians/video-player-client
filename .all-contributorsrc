@@ -23,6 +23,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "dankokonate",
+      "name": "dankokonate",
+      "avatar_url": "https://avatars.githubusercontent.com/u/47424583?v=4",
+      "profile": "https://konatedanko.netlify.app/",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
