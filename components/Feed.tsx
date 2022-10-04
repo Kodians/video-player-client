@@ -10,7 +10,7 @@ const Feed = () => {
       <Box
         sx={{
           height: { sx: 'auto', md: '92vh' },
-          borderRight: '1px solid #3d3d3d',
+          borderRight: '1px solid #2F80ED',
           px: { sx: 0, md: 2 },
         }}
       >
@@ -22,7 +22,7 @@ const Feed = () => {
         <Typography
           className="copyright"
           variant="body2"
-          sx={{ mt: 1.5, color: '#fff' }}
+          sx={{ mt: 1.5, color: '#2F80ED' }}
         >
           Copyright
         </Typography>

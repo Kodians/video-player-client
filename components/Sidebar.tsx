@@ -17,21 +17,24 @@ const Categories = ({ selectedCategory, setSelectedCategory }) => (
         className="category-btn"
         onClick={() => setSelectedCategory(category.name)}
         style={{
-          background: category.name === selectedCategory && '#FC1503',
+          background: category.name === selectedCategory && '#2F80ED',
           color: 'white',
         }}
         key={category.name}
       >
         <span
           style={{
-            color: category.name === selectedCategory ? 'white' : 'blue',
+            color: category.name === selectedCategory ? 'white' : '#2F80ED',
             marginRight: '15px',
           }}
         >
           {category.icon}
         </span>
         <span
-          style={{ opacity: category.name === selectedCategory ? '1' : '0.8' }}
+          style={{
+            opacity: category.name === selectedCategory ? '1' : '0.8',
+            color: 'black',
+          }}
         >
           {category.name}
         </span>
