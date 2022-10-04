@@ -1,4 +1,4 @@
-import { Stack, Link } from '@mui/material';
+import { Stack, Link, Grid } from '@mui/material';
 import NextLink from 'next/link';
 
 import { logo } from '../utils/constants';
@@ -13,7 +13,6 @@ const Navbar = () => (
       position: 'sticky',
       background: '#000',
       top: 0,
-      justifyContent: 'space-between',
     }}
   >
     <NextLink href="/" passHref>
@@ -21,7 +20,10 @@ const Navbar = () => (
         <img src={logo} alt="logo" height={45} />
       </Link>
     </NextLink>
-    <SearchBar />
+    <strong style={{ color: 'white', marginLeft: '2%' }}>MiageTube</strong>
+    <div style={{ marginLeft: '30%' }}>
+      <SearchBar />
+    </div>
   </Stack>
 );
 

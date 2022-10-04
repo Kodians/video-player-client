@@ -5,7 +5,7 @@ import Feed from './Feed';
 const Layout = () => {
   return (
     <>
-      <Box sx={{ backgroundColor: '#000' }}>
+      <Box sx={{ backgroundColor: 'white' }}>
         <Navbar />
         <Feed />
       </Box>
