@@ -2,7 +2,7 @@ import axios from "axios";
 
 //create axios instance with base url
 const api = axios.create({
-  baseURL: "http://localhost:3001",
+  baseURL: "http://localhost:3000",
 });
 
 //inject x-access-token header with axios interceptor
