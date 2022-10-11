@@ -25,6 +25,10 @@ a {
   background-color: transparent;
 }
 
+.layout {
+  padding: 10px;
+}
+
 .category-btn:hover {
   background-color: #2f80ed !important;
   color: white !important;

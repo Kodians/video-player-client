@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Box, Stack, Typography } from '@mui/material';
 import Sidebar from './SideBar';
 
-const Feed = () => {
+const Feed = ({ children }: any) => {
   const [selectedCategory, setSelectedCategory] = useState('New');
 
   return (
@@ -40,6 +40,7 @@ const Feed = () => {
         </Typography>
 
         {/* <Videos videos={} /> */}
+        {children}
       </Box>
     </Stack>
   );

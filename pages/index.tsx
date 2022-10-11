@@ -16,7 +16,13 @@ import Layout from '../components/Layout';
 //   types: VideosType[];
 // }
 const Home: NextPage = () => {
-  return <Layout></Layout>;
+  return (
+    <>
+      {/* <Layout> */}
+      <h1>Bonjour</h1>
+      {/* </Layout> */}
+    </>
+  );
 };
 
 export default Home;
