@@ -1,7 +1,8 @@
 import type { NextPage } from 'next';
 import { useFetch } from '../hooks/useFetch';
 import { useEffect } from 'react';
-
+import Grid from "@mui/material/Grid"
+import VideoCard from '../components/VideoCard';
 // export const getStaticProps: GetStaticProps = async () => {
 //   // Fetch access token.
 //   // Fetch data of types.
