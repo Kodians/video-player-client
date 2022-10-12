@@ -10,7 +10,7 @@ function VideoCard({ video }) {
       <CardMedia
         component="img"
         alt="green iguana"
-        height="140"
+        height="120"
         image={video.url}
       />
       <CardContent>
