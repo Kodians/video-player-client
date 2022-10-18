@@ -13,6 +13,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Link from 'next/link';
+import { useInsert } from '../../hooks/useInsert';
 
 function Copyright(props: any) {
   return (
@@ -30,13 +31,25 @@ function Copyright(props: any) {
 const theme = createTheme();
 
 export default function SignIn() {
+  const { mutate } = useInsert("/user/login", {
+        onSuccess: (data: object) => {
+            console.log(data);
+        }
+    })
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    mutate({
+        data: {
+            email: data.get('email'),
+            password: data.get('password')
+        },
+        options: {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+        },
+    })
   };
 
   return (
