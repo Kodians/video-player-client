@@ -21,9 +21,14 @@ const Navbar = () => (
       </Link>
     </NextLink>
     <strong style={{ color: 'white', marginLeft: '2%' }}>MiageTube</strong>
-    <div style={{ marginLeft: '30%' }}>
+    <Grid
+      container
+      // columns={{ xs: 4, sm: 8, md: 12 }}
+      alignItems="center"
+      justifyContent="center"
+    >
       <SearchBar />
-    </div>
+    </Grid>
   </Stack>
 );
 

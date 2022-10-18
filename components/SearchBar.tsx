@@ -26,6 +26,8 @@ const SearchBar = () => {
         pl: 2,
         boxShadow: 'none',
         mr: { sm: 5 },
+        display: 'flex',
+        alignItems: 'center',
       }}
     >
       <input
