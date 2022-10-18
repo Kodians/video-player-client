@@ -14,6 +14,8 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Link from 'next/link';
 import { useInsert } from '../../hooks/useInsert';
+import { useRouter } from 'next/router';
+import tokenService from '../../services/token.service';
 
 function Copyright(props: any) {
   return (
@@ -31,9 +33,13 @@ function Copyright(props: any) {
 const theme = createTheme();
 
 export default function SignIn() {
+  const router = useRouter();
   const { mutate } = useInsert("/user/login", {
-        onSuccess: (data: object) => {
-            console.log(data);
+        onSuccess: (data: any) => {
+          if(data.status === 200 && data.data) {
+            tokenService.setUser(data.data);
+            router.push("/");
+          }
         }
     })
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
