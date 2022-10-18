@@ -14,6 +14,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Link from 'next/link';
 import { useInsert } from '../../hooks/useInsert';
+import { useRouter } from 'next/router';
 
 function Copyright(props: any) {
   return (
@@ -31,9 +32,12 @@ function Copyright(props: any) {
 const theme = createTheme();
 
 export default function SignUp() {
+  const router = useRouter();
     const { mutate } = useInsert("/user/signup", {
-        onSuccess: (data: object) => {
-            console.log(data);
+        onSuccess: (data: any) => {
+            if(data.status === 200 && data.data) {
+              router.push("/account/signin");
+            }
         }
     })
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
