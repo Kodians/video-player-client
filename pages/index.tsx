@@ -23,7 +23,7 @@ const Home: NextPage = () => {
   })
 
   useEffect(() => {
-    console.log(data?.data?.filesData)
+    console.log(data)
   }, [data])
 
   if (isLoading) {
@@ -42,15 +42,15 @@ const Home: NextPage = () => {
       <h1>Bonjour</h1>
       {/* </Layout> */}
       <Grid container justifyContent={'space-around'} alignItems='center'>
-        {data?.data?.filesData?.map((image: any) => {
-          const { fileBase64String } = image;
+        {data?.data?.map((image: any) => {
+          const { fileBase64String ,metadata:{title, description}} = image;
         return (
           <Grid item>
-          <VideoCard video={{ url: `data:image/jpeg;base64 ${fileBase64String}`, title:"funny video", description:"this is a simple description"}}/>
+          <VideoCard video={{ url: `data:image/jpeg;base64,${fileBase64String}`, title, description}}/>
         </Grid>
         )
       })}
-      </Grid>
+     </Grid>
     </>
   );
 };
