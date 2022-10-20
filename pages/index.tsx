@@ -37,35 +37,20 @@ const Home: NextPage = () => {
 
   return (
     <>
+      
       {/* <Layout> */}
       <h1>Bonjour</h1>
       {/* </Layout> */}
       <Grid container justifyContent={'space-around'} alignItems='center'>
-        <Grid item>
-          <VideoCard video={{ url: "https://source.unsplash.com/random", title:"funny video", description:"this is a simple description"}}/>
+        {data?.data?.map((image: any) => {
+          const { fileBase64String ,metadata:{title, description}} = image;
+        return (
+          <Grid item>
+          <VideoCard video={{ url: `data:image/jpeg;base64,${fileBase64String}`, title, description}}/>
         </Grid>
-        <Grid item>
-          <VideoCard video={{ url: "https://source.unsplash.com/random", title:"fun video", description:"c'est une description"}}/>
-        </Grid>
-        <Grid item>
-          <VideoCard video={{ url: "https://source.unsplash.com/random", title:"greeting video", description:"vidéo trop drole"}}/>
-        </Grid>
-        <Grid item>
-          <VideoCard video={{ url: "https://source.unsplash.com/random", title:"great video", description:"il mange débout"}}/>
-        </Grid>
-        <Grid item>
-          <VideoCard video={{ url: "https://source.unsplash.com/random", title:"great video", description:"il mange débout"}}/>
-        </Grid>
-        <Grid item>
-          <VideoCard video={{ url: "https://source.unsplash.com/random", title:"great video", description:"il mange débout"}}/>
-        </Grid>
-        <Grid item>
-          <VideoCard video={{ url: "https://source.unsplash.com/random", title:"great video", description:"il mange débout"}}/>
-        </Grid>
-        <Grid item>
-          <VideoCard video={{ url: "https://source.unsplash.com/random", title:"great video", description:"il mange débout"}}/>
-        </Grid>
-      </Grid>
+        )
+      })}
+     </Grid>
     </>
   );
 };
