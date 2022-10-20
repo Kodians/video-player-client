@@ -46,7 +46,7 @@ const Home: NextPage = () => {
           const { fileBase64String } = image;
         return (
           <Grid item>
-          <VideoCard video={{ url: fileBase64String, title:"funny video", description:"this is a simple description"}}/>
+          <VideoCard video={{ url: `data:image/jpeg;base64 ${fileBase64String}`, title:"funny video", description:"this is a simple description"}}/>
         </Grid>
         )
       })}
