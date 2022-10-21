@@ -3,6 +3,7 @@ import { useFetch } from '../hooks/useFetch';
 import { useEffect } from 'react';
 import Grid from "@mui/material/Grid"
 import VideoCard from '../components/VideoCard';
+import Link from 'next/link';
 // export const getStaticProps: GetStaticProps = async () => {
 //   // Fetch access token.
 //   // Fetch data of types.
@@ -43,10 +44,14 @@ const Home: NextPage = () => {
       {/* </Layout> */}
       <Grid container justifyContent={'space-around'} alignItems='center'>
         {data?.data?.map((image: any) => {
-          const { fileBase64String ,metadata:{title, description}} = image;
+          const { fileBase64String ,metadata:{title, description,videoId}} = image;
         return (
           <Grid item>
-          <VideoCard video={{ url: `data:image/jpeg;base64,${fileBase64String}`, title, description}}/>
+            <Link href={`/videos/${videoId}`} passHref>
+              <a>
+              <VideoCard video={{ url: `data:image/jpeg;base64,${fileBase64String}`, title, description}}/>
+            </a>
+            </Link>
         </Grid>
         )
       })}
