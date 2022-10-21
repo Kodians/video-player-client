@@ -5,20 +5,24 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 
 function VideoCard({ video }) {
+  const {
+    fileBase64String,
+    metadata: { title, description },
+  } = video;
   return (
     <Card sx={{ maxWidth: 345 }} elevation= {0}>
       <CardMedia
         component="img"
         alt="green iguana"
         height="120"
-        image={video.url}
+        image={`data:image/jpeg;base64,${fileBase64String}`}
       />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
-          {video.title}
+          {title}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          {video.description}
+          {description}
         </Typography>
       </CardContent>
     </Card>

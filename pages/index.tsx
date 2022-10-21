@@ -39,10 +39,6 @@ const Home: NextPage = () => {
     staleTime: Infinity,
   });
 
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
-
   if (isLoading) {
     return <h2>Loading...</h2>;
   }
@@ -57,26 +53,18 @@ const Home: NextPage = () => {
       <h1>Bonjour</h1>
       {/* </Layout> */}
       <Grid container justifyContent={"space-around"} alignItems="center">
-        {data?.data?.map((image: any) => {
-          const {
-            fileBase64String,
-            metadata: { title, description, videoId },
-          } = image;
-          return (
-            <Grid key={videoId} item>
-              <Link href={`/videos/${videoId}`} passHref>
-                <a>
-                  <VideoCard
-                    video={{
-                      url: `data:image/jpeg;base64,${fileBase64String}`,
-                      title,
-                      description,
-                    }}
-                  />
-                </a>
-              </Link>
-            </Grid>
-          );
+        {data?.pages.map((page: any) => {
+          return page.data.map((item: any) => {
+            return (
+              <Grid key={item.metadata.videoId} item>
+                <Link href={`/videos/${item.metadata.videoId}`} passHref>
+                  <a>
+                    <VideoCard video={item} />
+                  </a>
+                </Link>
+              </Grid>
+            );
+          })
         })}
       </Grid>
       <button disabled={!hasNextPage} onClick={fetchNextPage}>
