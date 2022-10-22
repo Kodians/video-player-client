@@ -17,7 +17,7 @@ const useStyles = makeStyles(() => ({
     flexGrow: 1,
     bgcolor: "background.paper",
     display: "flex",
-    justifyContent: "center",
+    justifyContent: "space-between",
     minHeight: "100vh",
   },
   tabs: {
