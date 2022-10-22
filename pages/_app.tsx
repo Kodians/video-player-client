@@ -3,21 +3,27 @@ import type { AppProps } from 'next/app';
 import { Box } from '@mui/material';
 import Feed from '../components/Feed';
 import Navbar from '../components/Navbar';
+import { QueryClientProvider, QueryClient } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools';
+import React from 'react';
+
+const queryClient = new QueryClient();
 
 function MyApp({ Component, pageProps }: AppProps) {
-  if (Component.getUserLayout) {
-    return Component.getUserLayout(<Component {...pageProps} />);
-  }
-
   return (
-    <>
-      <Box sx={{ backgroundColor: 'white' }}>
-        <Navbar />
-        <Feed>
-          <Component {...pageProps} />
-        </Feed>
-      </Box>
-    </>
+    <QueryClientProvider client={queryClient}>
+      {Component.getUserLayout ? (
+        Component.getUserLayout(<Component {...pageProps} />)
+      ) : (
+        <Box sx={{ backgroundColor: 'white' }}>
+          <Navbar />
+          <Feed>
+            <Component {...pageProps} />
+          </Feed>
+        </Box>
+      )}
+      <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
+    </QueryClientProvider>
   );
 }
 
