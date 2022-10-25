@@ -52,7 +52,7 @@ const Home: NextPage = () => {
       {/* <Layout> */}
       <h1>Bonjour</h1>
       {/* </Layout> */}
-      <Grid container justifyContent={"space-around"} alignItems="center">
+      <Grid container justifyContent={"space-between"} alignItems="center">
         {data?.pages.map((page: any) => {
           return page.data.map((item: any) => {
             return (
