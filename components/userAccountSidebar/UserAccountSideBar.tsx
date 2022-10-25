@@ -17,8 +17,8 @@ const useStyles = makeStyles(() => ({
   root: {
     flexGrow: 1,
     bgcolor: "background.paper",
-    display: "flex",
-    justifyContent: "space-between",
+    // display: "flex",
+    // justifyContent: "space-between",
     minHeight: "100vh",
   },
   tabs: {
@@ -40,7 +40,7 @@ function TabPanel(props: TabPanelProps) {
     >
       {value === index && (
         <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
+          <Typography component="div">{children}</Typography>
         </Box>
       )}
     </div>
@@ -63,7 +63,14 @@ export const UserAccountSideBar = () => {
   };
 
   return (
-    <Box className={classes.root}>
+    <Box
+      sx={{
+        flexGrow: 1,
+        bgcolor: "background.paper",
+        display: "flex",
+        height: "100vh",
+      }}
+    >
       <Tabs
         orientation="vertical"
         variant="scrollable"
@@ -71,7 +78,7 @@ export const UserAccountSideBar = () => {
         onChange={handleChange}
         aria-label="Vertical tabs example"
         className={classes.tabs}
-        sx={{ borderRight: 1, borderColor: "divider" }}
+        sx={{ borderRight: 1, borderColor: "divider", overflow: "visible" }}
       >
         <Tab label="Ajouter +" {...a11yProps(0)} />
         <Tab label="Vidéos" {...a11yProps(1)} />
