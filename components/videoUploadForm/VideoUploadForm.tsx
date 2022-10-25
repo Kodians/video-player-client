@@ -15,7 +15,7 @@ const useStyles = makeStyles(() => ({
     flexDirection: "column",
   },
   textFields: {
-    width: "100% !important",
+    width: "100%",
   },
   alert: {
     margin: "10px 0 10px 0",
@@ -158,6 +158,7 @@ export const VideoUploadForm = () => {
           <Grid item xs={12} sm={6}>
             <TextField
               className={classes.textFields}
+              sx={{ width: "100% !important" }}
               id="outlined-multiline-flexible"
               label="Titre de la vidéo"
               maxRows={4}
@@ -168,6 +169,7 @@ export const VideoUploadForm = () => {
           <Grid item xs={12} sm={6}>
             <TextField
               className={classes.textFields}
+              sx={{ width: "100% !important" }}
               id="outlined-select-categoryId"
               select
               label="Catégorie"
