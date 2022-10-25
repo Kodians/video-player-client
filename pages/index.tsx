@@ -42,7 +42,7 @@ const Home: NextPage = () => {
       {/* <Layout> */}
       <h1>Bonjour</h1>
       {/* </Layout> */}
-      <Grid container justifyContent={'space-around'} alignItems='center'>
+      <Grid container justifyContent={'space-around'}  alignItems='center'>
         {data?.data?.map((image: any) => {
           const { fileBase64String ,metadata:{title, description,videoId}} = image;
         return (
