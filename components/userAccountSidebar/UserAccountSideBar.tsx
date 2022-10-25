@@ -5,6 +5,7 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { VideoUploadForm } from "../videoUploadForm/VideoUploadForm";
 import { makeStyles } from "@mui/styles";
+import UserVideosInfos from "../userVideosInfos/userVideosInfos";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -35,6 +36,7 @@ function TabPanel(props: TabPanelProps) {
       id={`vertical-tabpanel-${index}`}
       aria-labelledby={`vertical-tab-${index}`}
       {...other}
+      style={{ overflow: "auto" }}
     >
       {value === index && (
         <Box sx={{ p: 3 }}>
@@ -80,7 +82,7 @@ export const UserAccountSideBar = () => {
           <VideoUploadForm />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          Item Two
+          <UserVideosInfos />
         </TabPanel>
         <TabPanel value={value} index={2}>
           Item Three
