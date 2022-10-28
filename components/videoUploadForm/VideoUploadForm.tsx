@@ -94,6 +94,7 @@ export const VideoUploadForm = () => {
               // setInsertedVideoId(
               //   (prev) => (prev!["insertedVideoId"] = data.data._id)
               // );
+              console.log({ title, description, categoryId });
               if (insertedVideoId !== undefined) {
                 console.log("insertedVideoId", insertedVideoId);
                 const thumbnailForm = new FormData();
@@ -102,9 +103,11 @@ export const VideoUploadForm = () => {
                   {
                     data: thumbnailForm,
                     options: {
-                      headers: { "Content-Type": "multipart/form-data" },
+                      headers: {
+                        "Content-Type": "multipart/form-data",
+                      },
+                      params: { title, description, categoryId },
                     },
-                    params: { title, description, categoryId },
                   },
                   {
                     onSuccess: (data) => {

@@ -1,4 +1,4 @@
-import { api } from "../services/api.service"
+import { api } from "../services/api.service";
 import { useMutation } from "react-query";
 
 const insertData = (uri: string, { data, options }: any) => {
