@@ -94,7 +94,7 @@ const UserVideosInfos = () => {
                 <p>{title}</p>
                 <p>{description}</p>
                 <p>
-                  <ActionPopover />
+                  <ActionPopover videoId={videoId} />
                 </p>
               </ListItem>
             );
