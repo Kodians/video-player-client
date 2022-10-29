@@ -5,11 +5,15 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { IconButton, List, ListItem } from "@mui/material";
+import { useDelete } from "../../hooks/useDelete";
+import tokenService from "../../services/token.service";
 
-export function ActionPopover() {
+export function ActionPopover({ videoId }: any) {
+  const [userId, setUserId] = React.useState<string>();
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
   );
+  const { mutate: deleteVideo } = useDelete(`/user/${userId}/videos`);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -21,6 +25,17 @@ export function ActionPopover() {
 
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
+
+  const removeVideo = () => {
+    deleteVideo(videoId);
+  };
+
+  React.useEffect(() => {
+    const user = tokenService.getUser();
+    if (user && user.userId) {
+      setUserId(user.userId);
+    }
+  }, [videoId]);
 
   return (
     <div>
@@ -46,7 +61,11 @@ export function ActionPopover() {
               </IconButton>
             </ListItem>
             <ListItem>
-              <IconButton size="small" sx={{ "& > *": { p: 1 } }}>
+              <IconButton
+                size="small"
+                sx={{ "& > *": { p: 1 } }}
+                onClick={removeVideo}
+              >
                 <DeleteIcon />
                 <Typography>Delete</Typography>
               </IconButton>
