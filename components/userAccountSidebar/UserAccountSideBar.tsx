@@ -3,9 +3,12 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Divider from "@mui/material/Divider";
 import { VideoUploadForm } from "../videoUploadForm/VideoUploadForm";
 import { makeStyles } from "@mui/styles";
 import UserVideosInfos from "../userVideosInfos/userVideosInfos";
+import Link from "next/link";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -80,20 +83,32 @@ export const UserAccountSideBar = () => {
         className={classes.tabs}
         sx={{ borderRight: 1, borderColor: "divider", overflow: "visible" }}
       >
-        <Tab label="Ajouter +" {...a11yProps(0)} />
-        <Tab label="Vidéos" {...a11yProps(1)} />
-        <Tab label="Profile" {...a11yProps(2)} />
+        <Button>
+          <Link href={"/"}>
+            <Tab label="Accueil" {...a11yProps(0)} />
+          </Link>
+        </Button>
+        <Tab label="Ajouter +" {...a11yProps(1)} />
+        <Tab label="Vidéos" {...a11yProps(2)} />
+        <Tab label="Profile" {...a11yProps(3)} />
+        <Button>
+          <Link href={"/"}>
+            <Tab label="Déconnexion" {...a11yProps(4)} />
+          </Link>
+        </Button>
       </Tabs>
       <div style={{ display: "flex", justifyContent: "center", width: "100%" }}>
-        <TabPanel value={value} index={0}>
+        <TabPanel value={value} index={0} />
+        <TabPanel value={value} index={1}>
           <VideoUploadForm />
         </TabPanel>
-        <TabPanel value={value} index={1}>
+        <TabPanel value={value} index={2}>
           <UserVideosInfos />
         </TabPanel>
-        <TabPanel value={value} index={2}>
+        <TabPanel value={value} index={3}>
           Item Three
         </TabPanel>
+        <TabPanel value={value} index={4} />
       </div>
     </Box>
   );

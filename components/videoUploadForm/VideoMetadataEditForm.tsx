@@ -11,7 +11,7 @@ const useStyles = makeStyles(() => ({
     flexDirection: "column",
     border: "1px solid #D1D1D1",
     padding: 20,
-    width: "100%",
+    // width: "100%",
   },
   textFields: {
     width: "100%",

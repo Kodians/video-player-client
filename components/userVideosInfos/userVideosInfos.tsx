@@ -52,7 +52,7 @@ const UserVideosInfos = () => {
     enabled: !!userId,
     staleTime: Infinity,
     getNextPageParam: (_lastPage: any, pages: any) => {
-      if (pages.length < 2) {
+      if (pages.length < 4) {
         return pages.length + 1;
       }
       return undefined;
