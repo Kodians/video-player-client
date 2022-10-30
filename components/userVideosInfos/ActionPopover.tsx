@@ -5,6 +5,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { IconButton, List, ListItem } from "@mui/material";
+import { useQueryClient } from "react-query";
 import { useDelete } from "../../hooks/useDelete";
 import tokenService from "../../services/token.service";
 
@@ -13,7 +14,32 @@ export function ActionPopover({ videoId }: any) {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
   );
-  const { mutate: deleteVideo } = useDelete(`/user/${userId}/videos`);
+  const queryClient = useQueryClient();
+  const { mutate: deleteVideo } = useDelete(`/user/${userId}/videos`, {
+    onSuccess: () => {
+      // get all query keys
+      const queryKeys = queryClient.getQueryCache().findAll();
+      // find the query key that includes the userId
+      const queryKey = queryKeys.find((key: any) => {
+        if (key.queryKey === undefined) {
+          return false;
+        }
+
+        if (typeof key.queryKey === "string") {
+          return key.queryKey.includes(userId as string);
+        }
+
+        if (typeof key.queryKey === "object") {
+          return key.queryKey[0].includes(userId as string);
+        }
+
+        return false;
+      });
+
+      // invalidate the query key
+      queryClient.invalidateQueries(queryKey?.queryKey);
+    },
+  });
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
