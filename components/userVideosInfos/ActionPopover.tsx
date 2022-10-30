@@ -9,7 +9,11 @@ import { useQueryClient } from "react-query";
 import { useDelete } from "../../hooks/useDelete";
 import tokenService from "../../services/token.service";
 
-export function ActionPopover({ videoId }: any) {
+export function ActionPopover({
+  videoId,
+  setIsShowingEditForm,
+  setVideoToEditMetadata,
+}: any) {
   const [userId, setUserId] = React.useState<string>();
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
@@ -40,6 +44,12 @@ export function ActionPopover({ videoId }: any) {
       queryClient.invalidateQueries(queryKey?.queryKey);
     },
   });
+
+  const handleEditButtonClick = () => {
+    setIsShowingEditForm(true);
+    setVideoToEditMetadata(videoId);
+    setAnchorEl(null);
+  };
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -81,7 +91,11 @@ export function ActionPopover({ videoId }: any) {
         <Typography component="div" sx={{ p: 2 }}>
           <List>
             <ListItem>
-              <IconButton size="small" sx={{ "& > *": { p: 1 } }}>
+              <IconButton
+                size="small"
+                sx={{ "& > *": { p: 1 } }}
+                onClick={handleEditButtonClick}
+              >
                 <EditIcon />
                 <Typography>Edit</Typography>
               </IconButton>
