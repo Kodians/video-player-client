@@ -32,10 +32,10 @@ function userProfile() {
                         </Stack>
                     </Box>
                     <Box sx={{ mt: 3, ml: 1, mb: 1 }}>
-                        <Typography>
+                        <Typography variant="h6" component="div">
                             Choose an image in your computer
                         </Typography>
-                        <Stack direction="row" spacing={2}>
+                        <Stack direction="row" spacing={2} margin='10px'>
                             <Button variant="contained" component="label">
                                 Upload
                                 <input hidden accept="image/*" multiple type="file" />
@@ -108,8 +108,7 @@ function userProfile() {
                         </Box>
                     </div>
                 </Box>
-            </Card>
-            <div style={{ float: "right" }}>
+                <div style={{ float: "right" }}>
                 <Button
                     variant="contained"
                     color="success"
@@ -117,6 +116,7 @@ function userProfile() {
                     Save
                 </Button>
             </div>
+            </Card>
         </Container>
 
 
