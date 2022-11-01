@@ -1,12 +1,7 @@
-import React from "react";
-import { UserAccountSideBar } from "../../components/userAccountSidebar/UserAccountSideBar";
+import React from 'react';
 
 function UserAccount() {
-  return (
-    <div>
-      <UserAccountSideBar />
-    </div>
-  );
+  return <div>UserAccount</div>;
 }
 
 export default UserAccount;
