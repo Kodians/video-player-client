@@ -1,23 +1,23 @@
-import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
+import * as React from "react";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
 // import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Link from 'next/link';
-import { useInsert } from '../../hooks/useInsert';
-import { useRouter } from 'next/router';
-import tokenService from '../../services/token.service';
-import jsCookie from 'js-cookie';
-import { Store } from '../../utils/store';
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import Link from "next/link";
+import { useInsert } from "../../hooks/useInsert";
+import { useRouter } from "next/router";
+import tokenService from "../../services/token.service";
+import jsCookie from "js-cookie";
+import { Store } from "../../utils/store";
 
 function Copyright(props: any) {
   return (
@@ -27,12 +27,12 @@ function Copyright(props: any) {
       align="center"
       {...props}
     >
-      {'Copyright © '}
+      {"Copyright © "}
       <Link href="/" passHref>
         MiageTube
-      </Link>{' '}
+      </Link>{" "}
       {new Date().getFullYear()}
-      {'.'}
+      {"."}
     </Typography>
   );
 }
@@ -43,13 +43,13 @@ export default function SignIn() {
   const { state, dispatch }: any = React.useContext(Store);
   const { userInfo } = state;
   const router = useRouter();
-  const { mutate } = useInsert('/user/login', {
+  const { mutate } = useInsert("/user/login", {
     onSuccess: (data: any) => {
       if (data.status === 200 && data.data) {
         tokenService.setUser(data.data);
-        dispatch({ type: 'USER_LOGIN', payload: data.data });
-        jsCookie.set('userInfo', JSON.stringify(data.data));
-        router.push('/');
+        dispatch({ type: "USER_LOGIN", payload: data.data });
+        jsCookie.set("userInfo", JSON.stringify(data.data));
+        router.push("/");
       }
     },
   });
@@ -58,12 +58,12 @@ export default function SignIn() {
     const data = new FormData(event.currentTarget);
     mutate({
       data: {
-        email: data.get('email'),
-        password: data.get('password'),
+        email: data.get("email"),
+        password: data.get("password"),
       },
       options: {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       },
     });
@@ -76,12 +76,12 @@ export default function SignIn() {
         <Box
           sx={{
             marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
