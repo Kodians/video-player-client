@@ -16,10 +16,17 @@ import Link from 'next/link';
 import { useInsert } from '../../hooks/useInsert';
 import { useRouter } from 'next/router';
 import tokenService from '../../services/token.service';
+import jsCookie from 'js-cookie';
+import { Store } from '../../utils/store';
 
 function Copyright(props: any) {
   return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
+    <Typography
+      variant="body2"
+      color="text.secondary"
+      align="center"
+      {...props}
+    >
       {'Copyright © '}
       <Link href="/" passHref>
         MiageTube
@@ -33,29 +40,33 @@ function Copyright(props: any) {
 const theme = createTheme();
 
 export default function SignIn() {
+  const { state, dispatch }: any = React.useContext(Store);
+  const { userInfo } = state;
   const router = useRouter();
-  const { mutate } = useInsert("/user/login", {
-        onSuccess: (data: any) => {
-          if(data.status === 200 && data.data) {
-            tokenService.setUser(data.data);
-            router.push("/");
-          }
-        }
-    })
+  const { mutate } = useInsert('/user/login', {
+    onSuccess: (data: any) => {
+      if (data.status === 200 && data.data) {
+        tokenService.setUser(data.data);
+        dispatch({ type: 'USER_LOGIN', payload: data.data });
+        jsCookie.set('userInfo', JSON.stringify(data.data));
+        router.push('/');
+      }
+    },
+  });
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     mutate({
-        data: {
-            email: data.get('email'),
-            password: data.get('password')
+      data: {
+        email: data.get('email'),
+        password: data.get('password'),
+      },
+      options: {
+        headers: {
+          'Content-Type': 'application/json',
         },
-        options: {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-        },
-    })
+      },
+    });
   };
 
   return (
@@ -76,7 +87,12 @@ export default function SignIn() {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            noValidate
+            sx={{ mt: 1 }}
+          >
             <TextField
               margin="normal"
               required
