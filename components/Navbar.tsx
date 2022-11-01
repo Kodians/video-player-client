@@ -19,10 +19,9 @@ const Navbar = () => {
     setAnchorEl(e.currentTarget);
   };
 
-  const loginMenuCloseHandler = (e: any, redirect: string | UrlObject) => {
+  const loginMenuCloseHandler = (e: any, redirect: string) => {
     setAnchorEl(null);
     if (redirect) {
-      console.log(redirect);
       router.push(redirect);
     }
   };
