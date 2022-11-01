@@ -22,6 +22,7 @@ const Navbar = () => {
   const loginMenuCloseHandler = (e: any, redirect: string | UrlObject) => {
     setAnchorEl(null);
     if (redirect) {
+      console.log(redirect);
       router.push(redirect);
     }
   };
@@ -73,7 +74,7 @@ const Navbar = () => {
             anchorEl={anchorEl}
             keepMounted
             open={Boolean(anchorEl)}
-            onClose={loginMenuCloseHandler}
+            onClose={(e) => loginMenuCloseHandler(e)}
           >
             <MenuItem onClick={(e) => loginMenuCloseHandler(e, '/profile')}>
               Profile
