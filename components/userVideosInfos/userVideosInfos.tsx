@@ -86,7 +86,7 @@ const UserVideosInfos = () => {
       <List>
         {data?.pages.map((page: any) => {
           return page.data.map((video: any, index: any) => {
-            const { videoId, title, description } = video;
+            const { id, videoId, title, description } = video;
             return (
               <>
                 <ListItem key={title} className={classes.listItem} divider>
@@ -133,6 +133,7 @@ const UserVideosInfos = () => {
                         description,
                         userId,
                         videoId,
+                        id,
                       }}
                       setIsShowingEditForm={setIsShowingEditForm}
                     />

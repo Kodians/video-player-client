@@ -1,8 +1,8 @@
-import type { NextPage } from 'next';
-import { Stack, Box, Link } from '@mui/material';
-import VideoCard from '../components/VideoCard';
-import NextLink from 'next/link';
-import { useInfiniteFetch } from '../hooks/useInfiniteFetch';
+import type { NextPage } from "next";
+import { Stack, Box, Link } from "@mui/material";
+import VideoCard from "../components/VideoCard";
+import NextLink from "next/link";
+import { useInfiniteFetch } from "../hooks/useInfiniteFetch";
 
 const Home: NextPage = () => {
   const {
@@ -14,9 +14,9 @@ const Home: NextPage = () => {
     isFetchingNextPage,
     hasNextPage,
     fetchNextPage,
-  } = useInfiniteFetch('/videos/thumbnails', {
+  } = useInfiniteFetch("/videos/thumbnails", {
     getNextPageParam: (_lastPage: any, pages: any) => {
-      if (pages.length < 2) {
+      if (pages.length < 5) {
         return pages.length + 1;
       }
       return undefined;
@@ -58,7 +58,7 @@ const Home: NextPage = () => {
       <button disabled={!hasNextPage} onClick={fetchNextPage}>
         Load More
       </button>
-      <div>{isFetching && isFetchingNextPage ? 'Fetching...' : null}</div>
+      <div>{isFetching && isFetchingNextPage ? "Fetching..." : null}</div>
     </>
   );
 };
