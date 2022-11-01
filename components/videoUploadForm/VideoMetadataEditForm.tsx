@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, ChangeEvent } from "react";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import { Grid, TextareaAutosize, Button } from "@mui/material";
 import { makeStyles } from "@mui/styles";
+import Alert from "@mui/material/Alert";
 import { useFetch } from "../../hooks/useFetch";
+import { useInsert } from "../../hooks/useInsert";
+import { useEdit } from "../../hooks/useEdit";
+import { useQueryClient } from "react-query";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -23,13 +27,87 @@ const useStyles = makeStyles(() => ({
 
 export const VideoMetadataEditForm = ({ videoMetadata }: any) => {
   const classes = useStyles();
-  const { title, description, userId, videoId } = videoMetadata;
+  const queryClient = useQueryClient();
+  const { id, title, description, userId, videoId } = videoMetadata;
   const [metadata, setMetadata] = useState<any>({
     title,
     description,
     categoryId: "Choisir une catégorie",
     thumbnail: null,
   });
+
+  const [alert, setAlert] = useState<string>();
+
+  const { mutate: editVideoMetadataInfo } = useEdit(
+    `/user/${userId}/videos/${videoId}`,
+    {
+      onSuccess: () => {
+        setAlert("Les informations ont été modifiées avec succès");
+        setTimeout(() => {
+          setAlert("");
+        }, 3000);
+        // get all query keys
+        const queryKeys = queryClient.getQueryCache().findAll();
+        // find the query key that includes the userId
+        const queryKey = queryKeys.find((key: any) => {
+          if (key.queryKey === undefined) {
+            return false;
+          }
+
+          if (typeof key.queryKey === "string") {
+            return key.queryKey.includes(userId as string);
+          }
+
+          if (typeof key.queryKey === "object") {
+            return key.queryKey[0].includes(userId as string);
+          }
+
+          return false;
+        });
+
+        // invalidate the query key
+        queryClient.invalidateQueries(queryKey?.queryKey);
+      },
+      onError: () => {
+        setAlert("Une erreur est survenue");
+      },
+    }
+  );
+  const { mutate: changeVideoThumbnail } = useInsert(
+    `/user/${userId}/videos/${videoId}/thumbnail/${id}`,
+    {
+      onSuccess: () => {
+        setAlert("La miniature a été modifiée avec succès");
+        setTimeout(() => {
+          setAlert("");
+        }, 3000);
+        // get all query keys
+        const queryKeys = queryClient.getQueryCache().findAll();
+        // find the query key that includes the userId
+        const queryKey = queryKeys.find((key: any) => {
+          if (key.queryKey === undefined) {
+            return false;
+          }
+
+          if (typeof key.queryKey === "string") {
+            return key.queryKey.includes(userId as string);
+          }
+
+          if (typeof key.queryKey === "object") {
+            return key.queryKey[0].includes(userId as string);
+          }
+
+          return false;
+        });
+
+        // invalidate the query key
+        queryClient.invalidateQueries(queryKey?.queryKey);
+      },
+      onError: () => {
+        setAlert("Une erreur est survenue");
+      },
+    }
+  );
 
   const { data: categories }: any = useFetch("/categories", {
     staleTime: 300000,
@@ -39,11 +117,67 @@ export const VideoMetadataEditForm = ({ videoMetadata }: any) => {
     },
   });
 
-  const handleChange = (e: any) => {
-    setMetadata({ ...metadata, [e.target.name]: e.target.value });
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.name === "thumbnail") {
+      setMetadata({ ...metadata, [e.target.name]: e.target.files![0] });
+    } else {
+      setMetadata({ ...metadata, [e.target.name]: e.target.value });
+    }
   };
 
-  const editVideoMetadata = async () => {};
+  const editVideoMetadata = async () => {
+    const { title, description, categoryId, thumbnail } = metadata;
+    try {
+      if (
+        categoryId !== "Choisir une catégorie" &&
+        categoryId !== "" &&
+        categoryId !== undefined &&
+        title !== "" &&
+        title !== undefined &&
+        description !== "" &&
+        description !== undefined &&
+        (thumbnail === null || thumbnail === undefined)
+      ) {
+        editVideoMetadataInfo({
+          data: { ...metadata },
+          options: {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          },
+        });
+      } else if (
+        thumbnail !== null &&
+        thumbnail !== undefined &&
+        categoryId !== "Choisir une catégorie" &&
+        categoryId !== "" &&
+        categoryId !== undefined &&
+        title !== "" &&
+        title !== undefined &&
+        description !== "" &&
+        description !== undefined
+      ) {
+        const formData = new FormData();
+        formData.append("file", thumbnail);
+        changeVideoThumbnail({
+          data: formData,
+          options: {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+            params: { title, description, categoryId },
+          },
+        });
+      } else {
+        setAlert("Veuillez remplir tous les champs");
+        setTimeout(() => {
+          setAlert("");
+        }, 3000);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className={classes.root}>
@@ -99,10 +233,8 @@ export const VideoMetadataEditForm = ({ videoMetadata }: any) => {
             <input
               accept="image/*"
               id="contained-button-file"
-              multiple
               type="file"
               name="thumbnail"
-              value={metadata.thumbnail}
               onChange={handleChange}
             />
           </Grid>
@@ -127,6 +259,11 @@ export const VideoMetadataEditForm = ({ videoMetadata }: any) => {
           </Grid>
         </Grid>
       </Grid>
+      {alert && (
+        <Alert severity="error" className={classes.alert}>
+          {alert}
+        </Alert>
+      )}
       <Button variant="contained" color="primary" onClick={editVideoMetadata}>
         Enregistrer
       </Button>

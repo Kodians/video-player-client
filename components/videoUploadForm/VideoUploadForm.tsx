@@ -244,7 +244,6 @@ export const VideoUploadForm = () => {
             <input
               accept="video/*"
               id="contained-button-file"
-              multiple
               type="file"
               onChange={handleVideoUpload}
             />
@@ -257,7 +256,6 @@ export const VideoUploadForm = () => {
             <input
               accept="image/*"
               id="contained-button-file"
-              multiple
               type="file"
               onChange={handleVideoThumbnailUpload}
             />
