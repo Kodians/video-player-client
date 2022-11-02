@@ -1,4 +1,4 @@
-import { useState, ChangeEvent, useEffect } from "react";
+import { useState, ChangeEvent, useEffect, useCallback } from "react";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import { Grid, TextareaAutosize, Button } from "@mui/material";
@@ -15,7 +15,7 @@ const useStyles = makeStyles(() => ({
     flexDirection: "column",
   },
   textFields: {
-    width: "100% !important",
+    width: "100%",
   },
   alert: {
     margin: "10px 0 10px 0",
@@ -30,7 +30,6 @@ export const VideoUploadForm = () => {
   const [video, setVideo] = useState<File>();
   const [videoThumbnail, setVideoThumbnail] = useState<File>();
   const [userId, setUserId] = useState<string>();
-  const [insertedVideoId, setInsertedVideoId] = useState<string>();
   const [alert, setAlert] = useState<string>();
 
   const { data } = useFetch("/categories", {
@@ -40,10 +39,15 @@ export const VideoUploadForm = () => {
     mutate: insertVideo,
     isLoading: isVideoUploadLoading,
     isError,
+    data: insertedVideo,
   } = useInsert(`/user/${userId}/videos`);
-  const { mutate: insertThumbnail } = useInsert(
-    `/user/${userId}/videos/${insertedVideoId}/thumbnail`
-  );
+  const { mutate: insertThumbnail, isLoading: isVideoThumbnailUploadLoading } =
+    useInsert(
+      `/user/${userId}/videos/${insertedVideo?.data.lastUploadedFileId}/thumbnail`
+    );
+
+  const [isFireUploadThumbnail, setIsFireUploadThumbnail] =
+    useState<boolean>(false);
 
   const handleVideoTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
@@ -68,7 +72,6 @@ export const VideoUploadForm = () => {
   };
 
   const saveVideo = () => {
-    // console.log({ title, description, categoryId, video, videoThumbnail });
     if (userId !== undefined && userId !== null) {
       if (
         video !== undefined &&
@@ -76,10 +79,20 @@ export const VideoUploadForm = () => {
         videoThumbnail !== undefined &&
         videoThumbnail !== null
       ) {
-        const videoForm = new FormData();
-        videoForm.append("file", video);
-        insertVideo(
-          {
+        if (
+          title !== undefined &&
+          title !== null &&
+          title !== "" &&
+          description !== undefined &&
+          description !== null &&
+          description !== "" &&
+          categoryId !== undefined &&
+          categoryId !== null &&
+          categoryId !== "Choisir une catégorie"
+        ) {
+          const videoForm = new FormData();
+          videoForm.append("file", video);
+          insertVideo({
             data: videoForm,
             options: {
               headers: {
@@ -87,35 +100,14 @@ export const VideoUploadForm = () => {
               },
               params: { title, description, categoryId },
             },
-          },
-          {
-            onSuccess: (data) => {
-              setInsertedVideoId(data.data.lastUploadedFileId);
-              // setInsertedVideoId(
-              //   (prev) => (prev!["insertedVideoId"] = data.data._id)
-              // );
-              if (insertedVideoId !== undefined) {
-                console.log("insertedVideoId", insertedVideoId);
-                const thumbnailForm = new FormData();
-                thumbnailForm.append("file", videoThumbnail);
-                insertThumbnail(
-                  {
-                    data: thumbnailForm,
-                    options: {
-                      headers: { "Content-Type": "multipart/form-data" },
-                    },
-                    params: { title, description, categoryId },
-                  },
-                  {
-                    onSuccess: (data) => {
-                      console.log(data);
-                    },
-                  }
-                );
-              }
-            },
-          }
-        );
+          });
+          setIsFireUploadThumbnail(true);
+        } else {
+          setAlert("Veuillez remplir tous les champs");
+          setTimeout(() => {
+            setAlert("");
+          }, 3000);
+        }
       } else {
         setAlert("Veuillez choisir une video et une miniature");
         setTimeout(() => {
@@ -130,12 +122,70 @@ export const VideoUploadForm = () => {
     }
   };
 
+  const saveThumbnail = useCallback(() => {
+    if (videoThumbnail !== undefined && videoThumbnail !== null) {
+      if (
+        categoryId !== undefined &&
+        categoryId !== null &&
+        categoryId !== "Choisir une catégorie" &&
+        description !== undefined &&
+        description !== null &&
+        title !== undefined &&
+        title !== null
+      ) {
+        // As i dont want to invoke insertThumbnail function, after title, description or categoryId change,
+        // i used a state to control the execution of the function
+        if (isFireUploadThumbnail === true) {
+          const thumbnailForm = new FormData();
+          thumbnailForm.append("file", videoThumbnail);
+          insertThumbnail({
+            data: thumbnailForm,
+            options: {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+              params: { title, description, categoryId },
+            },
+          });
+        }
+        setIsFireUploadThumbnail(false);
+      } else {
+        setAlert("Veuillez remplir tous les champs");
+        setTimeout(() => {
+          setAlert("");
+        }, 3000);
+      }
+    } else {
+      setAlert("Veuillez choisir une miniature");
+      setTimeout(() => {
+        setAlert("");
+      }, 3000);
+    }
+  }, [
+    categoryId,
+    description,
+    insertThumbnail,
+    isFireUploadThumbnail,
+    title,
+    videoThumbnail,
+  ]);
+
   useEffect(() => {
     const user = tokenService.getUser();
     if (user && user.userId) {
       setUserId(user.userId);
     }
-  }, []);
+
+    // insert video thumbnail after video is inserted
+    // Wait for video to be inserted then get the video id and insert the thumbnail
+    if (
+      insertedVideo?.data.lastUploadedFileId !== undefined &&
+      insertedVideo?.data.lastUploadedFileId !== null &&
+      insertedVideo?.data.lastUploadedFileId !== ""
+    ) {
+      saveThumbnail();
+    }
+  }, [insertedVideo?.data.lastUploadedFileId, saveThumbnail]);
 
   if (isError) {
     return <div>Une erreur est survenue</div>;
@@ -158,6 +208,7 @@ export const VideoUploadForm = () => {
           <Grid item xs={12} sm={6}>
             <TextField
               className={classes.textFields}
+              sx={{ width: "100% !important" }}
               id="outlined-multiline-flexible"
               label="Titre de la vidéo"
               maxRows={4}
@@ -168,6 +219,7 @@ export const VideoUploadForm = () => {
           <Grid item xs={12} sm={6}>
             <TextField
               className={classes.textFields}
+              sx={{ width: "100% !important" }}
               id="outlined-select-categoryId"
               select
               label="Catégorie"
@@ -192,7 +244,6 @@ export const VideoUploadForm = () => {
             <input
               accept="video/*"
               id="contained-button-file"
-              multiple
               type="file"
               onChange={handleVideoUpload}
             />
@@ -205,7 +256,6 @@ export const VideoUploadForm = () => {
             <input
               accept="image/*"
               id="contained-button-file"
-              multiple
               type="file"
               onChange={handleVideoThumbnailUpload}
             />
@@ -236,7 +286,9 @@ export const VideoUploadForm = () => {
       <Button variant="contained" onClick={saveVideo}>
         Publier
       </Button>
-      <LoadingBackdrop open={isVideoUploadLoading} />
+      <LoadingBackdrop
+        open={isVideoUploadLoading || isVideoThumbnailUploadLoading || false}
+      />
     </div>
   );
 };

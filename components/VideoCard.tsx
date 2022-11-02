@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -10,14 +10,21 @@ function VideoCard({ video }) {
     metadata: { title, description },
   } = video;
   return (
-    <Card sx={{ maxWidth: 345 }} elevation= {0}>
+    <Card
+      sx={{
+        width: { xs: '100%', sm: '358px', md: '320px' },
+        boxShadow: 'none',
+        borderRadius: 0,
+      }}
+    >
       <CardMedia
         component="img"
         alt="green iguana"
         height="120"
         image={`data:image/jpeg;base64,${fileBase64String}`}
+        sx={{ width: { xs: '100%', sm: '358px' }, height: 180 }}
       />
-      <CardContent>
+      <CardContent sx={{ height: '106px' }}>
         <Typography gutterBottom variant="h5" component="div">
           {title}
         </Typography>
@@ -29,4 +36,4 @@ function VideoCard({ video }) {
   );
 }
 
-export default VideoCard
+export default VideoCard;

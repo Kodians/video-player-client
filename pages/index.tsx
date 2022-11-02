@@ -1,24 +1,9 @@
 import type { NextPage } from "next";
-import { useFetch } from "../hooks/useFetch";
-import { useEffect } from "react";
-import Grid from "@mui/material/Grid";
+import { Stack, Box, Link } from "@mui/material";
 import VideoCard from "../components/VideoCard";
-import Link from "next/link";
+import NextLink from "next/link";
 import { useInfiniteFetch } from "../hooks/useInfiniteFetch";
-// export const getStaticProps: GetStaticProps = async () => {
-//   // Fetch access token.
-//   // Fetch data of types.
 
-//   return {
-//     props: {
-//       types: [], // Set this to the types returned by the API.
-//     },
-//   };
-// };
-
-// export interface HomePageProps {
-//   types: VideosType[];
-// }
 const Home: NextPage = () => {
   const {
     data,
@@ -31,7 +16,7 @@ const Home: NextPage = () => {
     fetchNextPage,
   } = useInfiniteFetch("/videos/thumbnails", {
     getNextPageParam: (_lastPage: any, pages: any) => {
-      if (pages.length < 2) {
+      if (pages.length < 5) {
         return pages.length + 1;
       }
       return undefined;
@@ -49,24 +34,27 @@ const Home: NextPage = () => {
 
   return (
     <>
-      {/* <Layout> */}
-      <h1>Bonjour</h1>
-      {/* </Layout> */}
-      <Grid container justifyContent={"space-around"} alignItems="center">
+      <Stack
+        direction="row"
+        flexWrap="wrap"
+        justifyContent="start"
+        alignItems="start"
+        gap={2}
+      >
         {data?.pages.map((page: any) => {
           return page.data.map((item: any) => {
             return (
-              <Grid key={item.metadata.videoId} item>
-                <Link href={`/videos/${item.metadata.videoId}`} passHref>
-                  <a>
+              <Box key={item.metadata.videoId}>
+                <NextLink href={`/videos/${item.metadata.videoId}`} passHref>
+                  <Link>
                     <VideoCard video={item} />
-                  </a>
-                </Link>
-              </Grid>
+                  </Link>
+                </NextLink>
+              </Box>
             );
-          })
+          });
         })}
-      </Grid>
+      </Stack>
       <button disabled={!hasNextPage} onClick={fetchNextPage}>
         Load More
       </button>

@@ -3,10 +3,14 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Divider from "@mui/material/Divider";
 import { VideoUploadForm } from "../videoUploadForm/VideoUploadForm";
 import { makeStyles } from "@mui/styles";
 import UserVideosInfos from "../userVideosInfos/userVideosInfos";
 import UserProfile from "../userProfile/userProfile";
+import Link from "next/link";
+
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -18,8 +22,8 @@ const useStyles = makeStyles(() => ({
   root: {
     flexGrow: 1,
     bgcolor: "background.paper",
-    display: "flex",
-    justifyContent: "space-between",
+    // display: "flex",
+    // justifyContent: "space-between",
     minHeight: "100vh",
   },
   tabs: {
@@ -41,7 +45,7 @@ function TabPanel(props: TabPanelProps) {
     >
       {value === index && (
         <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
+          <Typography component="div">{children}</Typography>
         </Box>
       )}
     </div>
@@ -64,7 +68,14 @@ export const UserAccountSideBar = () => {
   };
 
   return (
-    <Box className={classes.root}>
+    <Box
+      sx={{
+        flexGrow: 1,
+        bgcolor: "background.paper",
+        display: "flex",
+        height: "100vh",
+      }}
+    >
       <Tabs
         orientation="vertical"
         variant="scrollable"
@@ -72,22 +83,36 @@ export const UserAccountSideBar = () => {
         onChange={handleChange}
         aria-label="Vertical tabs example"
         className={classes.tabs}
-        sx={{ borderRight: 1, borderColor: "divider" }}
+        sx={{ borderRight: 1, borderColor: "divider", overflow: "visible" }}
       >
-        <Tab label="Ajouter +" {...a11yProps(0)} />
-        <Tab label="Vidéos" {...a11yProps(1)} />
-        <Tab label="Profile" {...a11yProps(2)} />
+        <Button>
+          <Link href={"/"}>
+            <Tab label="Accueil" {...a11yProps(0)} />
+          </Link>
+        </Button>
+        <Tab label="Ajouter +" {...a11yProps(1)} />
+        <Tab label="Vidéos" {...a11yProps(2)} />
+        <Tab label="Profile" {...a11yProps(3)} />
+        <Button>
+          <Link href={"/"}>
+            <Tab label="Déconnexion" {...a11yProps(4)} />
+          </Link>
+        </Button>
       </Tabs>
       <div style={{ display: "flex", justifyContent: "center", width: "100%" }}>
-        <TabPanel value={value} index={0}>
+        <TabPanel value={value} index={0} />
+        <TabPanel value={value} index={1}>
           <VideoUploadForm />
         </TabPanel>
-        <TabPanel value={value} index={1}>
+        <TabPanel value={value} index={2}>
           <UserVideosInfos />
         </TabPanel>
         <TabPanel value={value} index={2}>
           <UserProfile />
+        <TabPanel value={value} index={3}>
+          Item Three
         </TabPanel>
+        <TabPanel value={value} index={4} />
       </div>
     </Box>
   );
