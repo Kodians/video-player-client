@@ -8,7 +8,9 @@ import Divider from "@mui/material/Divider";
 import { VideoUploadForm } from "../videoUploadForm/VideoUploadForm";
 import { makeStyles } from "@mui/styles";
 import UserVideosInfos from "../userVideosInfos/userVideosInfos";
+import UserProfile from "../userProfile/userProfile";
 import Link from "next/link";
+
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -105,6 +107,8 @@ export const UserAccountSideBar = () => {
         <TabPanel value={value} index={2}>
           <UserVideosInfos />
         </TabPanel>
+        <TabPanel value={value} index={2}>
+          <UserProfile />
         <TabPanel value={value} index={3}>
           Item Three
         </TabPanel>
