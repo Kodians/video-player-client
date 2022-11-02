@@ -11,7 +11,6 @@ import UserVideosInfos from "../userVideosInfos/userVideosInfos";
 import UserProfile from "../userProfile/userProfile";
 import Link from "next/link";
 
-
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -107,10 +106,8 @@ export const UserAccountSideBar = () => {
         <TabPanel value={value} index={2}>
           <UserVideosInfos />
         </TabPanel>
-        <TabPanel value={value} index={2}>
-          <UserProfile />
         <TabPanel value={value} index={3}>
-          Item Three
+          <UserProfile />
         </TabPanel>
         <TabPanel value={value} index={4} />
       </div>
