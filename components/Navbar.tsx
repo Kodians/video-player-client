@@ -71,7 +71,7 @@ const Navbar = () => {
             onClick={loginClickHandler}
             style={{ color: "white", fontWeight: "bold" }}
           >
-            {userInfo.firstName}
+            {userInfo?.firstName}
           </Button>
           <Menu
             id="simple-menu"
