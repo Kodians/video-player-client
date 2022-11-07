@@ -37,12 +37,10 @@ const useStyles = makeStyles(() => ({
     flexDirection: "row",
     justifyContent: "flex-start",
     alignItems: "center",
-    "&:nth-child(1) > *,&:nth-child(2) > *,&:nth-child(3) > *": {
-      marginRight: 10,
-    },
   },
   buttonIcon: {
     fontSize: 23,
+    marginRight: 10,
   },
   buttonTypography: {
     fontSize: 17,
@@ -142,7 +140,13 @@ export const UserAccountSideBar = () => {
         />
       </Tabs>
       <Link href={"/"}>
-        <IconButton sx={{ position: "absolute", top: 285, left: 10 }}>
+        <IconButton
+          sx={{
+            position: "absolute",
+            top: 285,
+            left: 10,
+          }}
+        >
           <LogoutIcon className={classes.buttonIcon} />
           <Typography variant="h6" className={classes.buttonTypography}>
             Logout

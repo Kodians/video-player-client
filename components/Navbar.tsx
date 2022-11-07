@@ -1,12 +1,12 @@
-import { Stack, Link, Grid, Button, Menu, MenuItem } from '@mui/material';
-import NextLink from 'next/link';
-import { useState, useContext } from 'react';
-import { useRouter } from 'next/router';
-import { Store } from '../utils/store';
-import { logo } from '../utils/constants';
-import SearchBar from '../components/SearchBar';
-import { UrlObject } from 'url';
-import jsCookie from 'js-cookie';
+import { Stack, Link, Grid, Button, Menu, MenuItem } from "@mui/material";
+import NextLink from "next/link";
+import { useState, useContext } from "react";
+import { useRouter } from "next/router";
+import { Store } from "../utils/store";
+import { logo } from "../utils/constants";
+import SearchBar from "../components/SearchBar";
+import { UrlObject } from "url";
+import jsCookie from "js-cookie";
 
 const Navbar = () => {
   const router = useRouter();
@@ -28,9 +28,9 @@ const Navbar = () => {
 
   const logoutClickHandler = () => {
     setAnchorEl(null);
-    dispatch({ type: 'USER_LOGOUT' });
-    jsCookie.remove('userInfo');
-    router.push('/');
+    dispatch({ type: "USER_LOGOUT" });
+    jsCookie.remove("userInfo");
+    router.push("/");
   };
 
   return (
@@ -39,17 +39,17 @@ const Navbar = () => {
       alignItems="center"
       p={2}
       sx={{
-        position: 'sticky',
-        background: '#000',
+        position: "sticky",
+        background: "#000",
         top: 0,
       }}
     >
       <NextLink href="/" passHref>
-        <Link style={{ display: 'flex', alignItems: 'center' }}>
+        <Link style={{ display: "flex", alignItems: "center" }}>
           <img src={logo} alt="logo" height={45} />
         </Link>
       </NextLink>
-      <strong style={{ color: 'white', marginLeft: '2%' }}>MiageTube</strong>
+      <strong style={{ color: "white", marginLeft: "2%" }}>MiageTube</strong>
       <Grid
         container
         // columns={{ xs: 4, sm: 8, md: 12 }}
@@ -64,7 +64,7 @@ const Navbar = () => {
             aria-controls="simple-menu"
             aria-haspopup="true"
             onClick={loginClickHandler}
-            style={{ color: 'white', fontWeight: 'bold' }}
+            style={{ color: "white", fontWeight: "bold" }}
           >
             {userInfo.firstName}
           </Button>
@@ -75,7 +75,9 @@ const Navbar = () => {
             open={Boolean(anchorEl)}
             onClose={(e) => loginMenuCloseHandler(e)}
           >
-            <MenuItem onClick={(e) => loginMenuCloseHandler(e, '/profile')}>
+            <MenuItem
+              onClick={(e) => loginMenuCloseHandler(e, "/user/account")}
+            >
               Profile
             </MenuItem>
             <MenuItem onClick={logoutClickHandler}>Déconnexion</MenuItem>
@@ -83,7 +85,7 @@ const Navbar = () => {
         </>
       ) : (
         <NextLink href="/account/signin" passHref>
-          <Link style={{ color: 'white', fontWeight: 'bold' }}>Connexion</Link>
+          <Link style={{ color: "white", fontWeight: "bold" }}>Connexion</Link>
         </NextLink>
       )}
     </Stack>
