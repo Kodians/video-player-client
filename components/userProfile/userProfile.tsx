@@ -13,8 +13,9 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 function userProfile() {
     return (
-        <Container sx={{ width: '100%', bgcolor: 'background.paper' }}>
-            <Card>
+        <Container sx={{ width: '100%', bgcolor: 'background.paper', display:"flex" }}>
+            <Container>
+                  <Card>
                 <Box sx={{ my: 3, mx: 2 }}>
                     <Grid container alignItems="center">
                         <Grid item xs>
@@ -47,7 +48,7 @@ function userProfile() {
                     </Box>
                 </div>
             </Card>
-            <Card style={{ margin: '15px' }}>
+            <Card style={{ margin: '15px 0' }}>
                 <Box sx={{ my: 3, mx: 2 }}>
                     <Grid container alignItems="center">
                         <Grid item xs>
@@ -108,16 +109,30 @@ function userProfile() {
                         </Box>
                     </div>
                 </Box>
-                <div style={{ float: "right" }}>
-                <Button
-                    variant="contained"
-                    color="success"
-                >
-                    Save
-                </Button>
-            </div>
+                <div style={{ float: "right", padding: "10px" }}>
+                    <Button
+                        variant="contained"
+                        color="success"
+                    >
+                        Save
+                    </Button>
+                </div>
             </Card>
+            </Container>
+            <Container style={{ display: "flex"}}>
+                <Card sx={{ width: '300px', height: '250px'}}>
+                    <div >
+                        Toto
+                    </div>
+
+                <Divider/>
+                </Card>
+            </Container>
+          
         </Container>
+
+        
+        
 
 
     )
