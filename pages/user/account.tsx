@@ -11,7 +11,9 @@ function UserAccount() {
 
   useEffect(() => {
     if (!userInfo) {
-      return router.push('/account/signin');
+      return () => {
+        router.push('/account/signin');
+      };
     }
   }, [router, userInfo]);
 
