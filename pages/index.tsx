@@ -46,7 +46,7 @@ const Home: NextPage = () => {
             return (
               <Box key={item.metadata.videoId}>
                 <NextLink href={`/videos/${item.metadata.videoId}`} passHref>
-                  <Link>
+                  <Link underline="none">
                     <VideoCard video={item} />
                   </Link>
                 </NextLink>
