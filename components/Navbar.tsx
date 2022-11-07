@@ -1,11 +1,11 @@
 import { Stack, Link, Grid, Button, Menu, MenuItem } from "@mui/material";
 import NextLink from "next/link";
-import { useState, useContext } from "react";
+import Image from "next/image";
+import { useState, useContext, useEffect } from "react";
 import { useRouter } from "next/router";
 import { Store } from "../utils/store";
 import { logo } from "../utils/constants";
 import SearchBar from "../components/SearchBar";
-import { UrlObject } from "url";
 import jsCookie from "js-cookie";
 
 const Navbar = () => {
@@ -14,6 +14,7 @@ const Navbar = () => {
   const { userInfo } = state;
 
   const [anchorEl, setAnchorEl] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const loginClickHandler = (e) => {
     setAnchorEl(e.currentTarget);
@@ -33,6 +34,10 @@ const Navbar = () => {
     router.push("/");
   };
 
+  useEffect(() => {
+    setIsLoggedIn(Boolean(userInfo));
+  }, [userInfo]);
+
   return (
     <Stack
       direction="row"
@@ -46,7 +51,7 @@ const Navbar = () => {
     >
       <NextLink href="/" passHref>
         <Link style={{ display: "flex", alignItems: "center" }}>
-          <img src={logo} alt="logo" height={45} />
+          <Image src={logo} alt="logo" height={45} width={45} />
         </Link>
       </NextLink>
       <strong style={{ color: "white", marginLeft: "2%" }}>MiageTube</strong>
@@ -58,7 +63,7 @@ const Navbar = () => {
       >
         <SearchBar />
       </Grid>
-      {userInfo ? (
+      {isLoggedIn ? (
         <>
           <Button
             aria-controls="simple-menu"
