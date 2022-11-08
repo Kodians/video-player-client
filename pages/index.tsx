@@ -29,7 +29,7 @@ const Home: NextPage = () => {
   }
 
   if (isError) {
-    return <h2>{error.message}</h2>;
+    return <h2>{error instanceof Error && error.message}</h2>;
   }
 
   return (
@@ -55,7 +55,7 @@ const Home: NextPage = () => {
           });
         })}
       </Stack>
-      <button disabled={!hasNextPage} onClick={fetchNextPage}>
+      <button disabled={!hasNextPage} onClick={() => fetchNextPage()}>
         Load More
       </button>
       <div>{isFetching && isFetchingNextPage ? "Fetching..." : null}</div>
