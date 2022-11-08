@@ -1,22 +1,13 @@
 import React, { useEffect, useState } from "react";
 import ReactPlayer from "react-player";
-import { Typography, Box, Stack, Link, Skeleton } from "@mui/material";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import NextLink from "next/link";
+import { Box, Stack, Skeleton } from "@mui/material";
 import VideoCard from "../../components/VideoCard";
 
 import { useRouter } from "next/router";
-import { useFetchStream } from "../../hooks/useFetchStream";
 import { useInfiniteFetch } from "../../hooks/useInfiniteFetch";
 function PlayVideo() {
   const router = useRouter();
   const { videoId } = router.query;
-  //   const { data, isLoading, isError, error } = useFetchStream(
-  //     videoId as string,
-  //     {
-  //       staleTime: Infinity,
-  //     }
-  //   );
 
   const [videoUrl, setVideoUrl] = useState<string>();
 
@@ -34,16 +25,20 @@ function PlayVideo() {
   );
 
   const fetchVideoToPlay = async (id: string) => {
-    const response = await fetch(
-      `http://localhost:3000/videos/${id}?cacheId=${id}`,
-      {
-        cache: "default",
-      }
-    );
-    const newResponse = new Response(response.body);
-    const blob = await newResponse.blob();
-    const url = URL.createObjectURL(blob);
-    setVideoUrl(url);
+    try {
+      const response = await fetch(
+        `http://localhost:3000/videos/${id}?cacheId=${id}`,
+        {
+          cache: "default",
+        }
+      );
+      const newResponse = new Response(response.body);
+      const blob = await newResponse.blob();
+      const url = URL.createObjectURL(blob);
+      setVideoUrl(url);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
