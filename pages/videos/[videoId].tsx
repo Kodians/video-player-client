@@ -61,8 +61,7 @@ function PlayVideo() {
   }
 
   if (isError) {
-    console.log("erreur", error.message);
-    return <h2>{error.message}</h2>;
+    return <h2>{error instanceof Error && error.message}</h2>;
   }
 
   return (
@@ -83,7 +82,9 @@ function PlayVideo() {
         >
           {data?.pages.map((page: any) => {
             return page.data.map((item: any) => {
-              return <VideoCard video={item} direction="column" />;
+              return (
+                <VideoCard key={item._id} video={item} direction="column" />
+              );
             });
           })}
         </Box>

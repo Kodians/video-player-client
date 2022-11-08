@@ -117,9 +117,13 @@ export const VideoMetadataEditForm = ({ videoMetadata }: any) => {
     },
   });
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>
+  ) => {
     if (e.target.name === "thumbnail") {
-      setMetadata({ ...metadata, [e.target.name]: e.target.files![0] });
+      // cast event target to HTMLInputElement to access files
+      const target = e.target as HTMLInputElement;
+      setMetadata({ ...metadata, [e.target.name]: target.files![0] });
     } else {
       setMetadata({ ...metadata, [e.target.name]: e.target.value });
     }
@@ -202,7 +206,7 @@ export const VideoMetadataEditForm = ({ videoMetadata }: any) => {
               maxRows={4}
               name="title"
               value={metadata.title}
-              onChange={handleChange}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange(e)}
             />
           </Grid>
           <Grid item xs={12} sm={4}>
@@ -214,7 +218,7 @@ export const VideoMetadataEditForm = ({ videoMetadata }: any) => {
               label="Catégorie"
               value={metadata.categoryId}
               name="categoryId"
-              onChange={handleChange}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange(e)}
             >
               {categories &&
                 categories.map((categoryId: any) => {
@@ -235,7 +239,7 @@ export const VideoMetadataEditForm = ({ videoMetadata }: any) => {
               id="contained-button-file"
               type="file"
               name="thumbnail"
-              onChange={handleChange}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange(e)}
             />
           </Grid>
         </Grid>
@@ -254,7 +258,9 @@ export const VideoMetadataEditForm = ({ videoMetadata }: any) => {
               }}
               name="description"
               value={metadata.description}
-              onChange={handleChange}
+              onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
+                handleChange(e)
+              }
             />
           </Grid>
         </Grid>

@@ -1,8 +1,9 @@
-import React from 'react';
-import { UserAccountSideBar } from '../../components/userAccountSidebar/UserAccountSideBar';
-import { Store } from '../../utils/store';
-import { useEffect, useContext } from 'react';
-import { useRouter } from 'next/router';
+import React from "react";
+import { UserAccountSideBar } from "../../components/userAccountSidebar/UserAccountSideBar";
+import { Store } from "../../utils/store";
+import { useEffect, useContext } from "react";
+import { useRouter } from "next/router";
+import { NextComponentType, NextPageContext } from "next";
 
 function UserAccount() {
   const { state }: any = useContext(Store);
@@ -12,7 +13,7 @@ function UserAccount() {
   useEffect(() => {
     if (!userInfo) {
       return () => {
-        router.push('/account/signin');
+        router.push("/account/signin");
       };
     }
   }, [router, userInfo]);
@@ -26,6 +27,8 @@ function UserAccount() {
 
 export default UserAccount;
 
-UserAccount.getUserLayout = (page) => {
+UserAccount.getUserLayout = (
+  page: NextComponentType<NextPageContext, any, any>
+) => {
   return <>{page}</>;
 };

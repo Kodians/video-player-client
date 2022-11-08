@@ -78,7 +78,7 @@ const UserVideosInfos = () => {
     return <div>Loading...</div>;
   }
   if (isError) {
-    return <div>{error.message}</div>;
+    return <h2>{error instanceof Error && error.message}</h2>;
   }
 
   return (
@@ -147,7 +147,7 @@ const UserVideosInfos = () => {
           <div>{isFetching && isFetchingNextPage ? "Fetching..." : null}</div>
         </ListItem>
       </List>
-      <button disabled={!hasNextPage} onClick={fetchNextPage}>
+      <button disabled={!hasNextPage} onClick={() => fetchNextPage()}>
         Load More
       </button>
     </>

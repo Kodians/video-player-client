@@ -16,11 +16,11 @@ const Navbar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const loginClickHandler = (e) => {
+  const loginClickHandler = (e: any) => {
     setAnchorEl(e.currentTarget);
   };
 
-  const loginMenuCloseHandler = (e: any, redirect: string) => {
+  const loginMenuCloseHandler = (e: any, redirect: string = "") => {
     setAnchorEl(null);
     if (redirect) {
       router.push(redirect);
@@ -78,7 +78,7 @@ const Navbar = () => {
             anchorEl={anchorEl}
             keepMounted
             open={Boolean(anchorEl)}
-            onClose={(e) => loginMenuCloseHandler(e)}
+            onClose={(e: any) => loginMenuCloseHandler(e)}
           >
             <MenuItem
               onClick={(e) => loginMenuCloseHandler(e, "/user/account")}
