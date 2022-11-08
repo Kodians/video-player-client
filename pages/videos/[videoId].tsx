@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import ReactPlayer from 'react-player';
-import { Typography, Box, Stack, Link, Skeleton } from '@mui/material';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import NextLink from 'next/link';
-import VideoCard from '../../components/VideoCard';
+import React, { useEffect, useState } from "react";
+import ReactPlayer from "react-player";
+import { Typography, Box, Stack, Link, Skeleton } from "@mui/material";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import NextLink from "next/link";
+import VideoCard from "../../components/VideoCard";
 
-import { useRouter } from 'next/router';
-import { useFetchStream } from '../../hooks/useFetchStream';
-import { useInfiniteFetch } from '../../hooks/useInfiniteFetch';
+import { useRouter } from "next/router";
+import { useFetchStream } from "../../hooks/useFetchStream";
+import { useInfiniteFetch } from "../../hooks/useInfiniteFetch";
 function PlayVideo() {
   const router = useRouter();
-  const videoId = router.query.videoId;
+  const { videoId } = router.query;
   //   const { data, isLoading, isError, error } = useFetchStream(
   //     videoId as string,
   //     {
@@ -21,7 +21,7 @@ function PlayVideo() {
   const [videoUrl, setVideoUrl] = useState<string>();
 
   const { data, isLoading, isError, error } = useInfiniteFetch(
-    '/videos/thumbnails',
+    "/videos/thumbnails",
     {
       getNextPageParam: (_lastPage: any, pages: any) => {
         if (pages.length < 4) {
@@ -33,22 +33,27 @@ function PlayVideo() {
     }
   );
 
+  const fetchVideoToPlay = async (id: string) => {
+    const response = await fetch(
+      `http://localhost:3000/videos/${id}?cacheId=${id}`,
+      {
+        cache: "default",
+      }
+    );
+    const newResponse = new Response(response.body);
+    const blob = await newResponse.blob();
+    const url = URL.createObjectURL(blob);
+    setVideoUrl(url);
+  };
+
   useEffect(() => {
-    (async () => {
-      const response = await fetch(
-        `http://localhost:3000/videos/${videoId}?cacheId=${videoId}`
-      );
-      const newResponse = new Response(response.body);
-      const blob = await newResponse.blob();
-      const url = URL.createObjectURL(blob);
-      setVideoUrl(url);
-    })();
-  }, [videoId]);
+    fetchVideoToPlay(videoId as string);
+  }, [router.isReady, videoId]);
 
   if (isLoading) {
     return (
       <Skeleton
-        sx={{ bgcolor: 'grey.900' }}
+        sx={{ bgcolor: "grey.900" }}
         variant="rectangular"
         className="react-player"
       />
@@ -56,15 +61,15 @@ function PlayVideo() {
   }
 
   if (isError) {
-    console.log('erreur', error.message);
+    console.log("erreur", error.message);
     return <h2>{error.message}</h2>;
   }
 
   return (
     <Box minHeight="95vh">
-      <Stack direction={{ xs: 'column', md: 'row' }}>
+      <Stack direction={{ xs: "column", md: "row" }}>
         <Box flex={1}>
-          <Box sx={{ width: '100%', position: 'sticky', top: '86px' }}>
+          <Box sx={{ width: "100%", position: "sticky", top: "86px" }}>
             {videoUrl && (
               <ReactPlayer url={videoUrl} className="react-player" controls />
             )}
