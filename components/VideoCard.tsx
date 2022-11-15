@@ -15,6 +15,10 @@ function VideoCard({ video }: any) {
         width: { xs: "100%", sm: "358px", md: "320px" },
         boxShadow: "none",
         borderRadius: 0,
+        transition: "box-shadow .3s",
+        "&:hover": {
+          boxShadow: "0 0 11px rgba(33,33,33,.2)",
+        },
       }}
     >
       <CardMedia
