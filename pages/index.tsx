@@ -3,6 +3,7 @@ import { Stack, Box, Link } from "@mui/material";
 import VideoCard from "../components/VideoCard";
 import NextLink from "next/link";
 import { useInfiniteFetch } from "../hooks/useInfiniteFetch";
+import VideoSkeleton from "../components/Skeleton";
 
 const Home: NextPage = () => {
   const {
@@ -25,7 +26,19 @@ const Home: NextPage = () => {
   });
 
   if (isLoading) {
-    return <h2>Loading...</h2>;
+    return (
+      <>
+        <Stack
+          direction="row"
+          flexWrap="wrap"
+          justifyContent="start"
+          alignItems="start"
+          gap={2}
+        >
+          <VideoSkeleton skeletons={4} />
+        </Stack>
+      </>
+    );
   }
 
   if (isError) {
@@ -54,11 +67,11 @@ const Home: NextPage = () => {
             );
           });
         })}
+        {isFetching && isFetchingNextPage && <VideoSkeleton skeletons={4} />}
       </Stack>
       <button disabled={!hasNextPage} onClick={() => fetchNextPage()}>
         Load More
       </button>
-      <div>{isFetching && isFetchingNextPage ? "Fetching..." : null}</div>
     </>
   );
 };
