@@ -10,7 +10,7 @@ import React from "react";
 
 const queryClient = new QueryClient();
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps }: AppProps | any) {
   return (
     <StoreProvider>
       <QueryClientProvider client={queryClient}>

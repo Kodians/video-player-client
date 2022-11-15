@@ -1,7 +1,7 @@
 import Cookies from "js-cookie";
 import { createContext, useReducer } from "react";
 
-export const Store: any = createContext();
+export const Store: any = createContext(null);
 
 const initialState = {
   userInfo: Cookies.get("userInfo")
@@ -27,7 +27,7 @@ function reducer(
   }
 }
 
-export function StoreProvider(props) {
+export function StoreProvider(props: any) {
   const [state, dispatch] = useReducer(reducer, initialState);
   const value = { state, dispatch };
   return <Store.Provider value={value}>{props.children}</Store.Provider>;
