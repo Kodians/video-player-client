@@ -1,11 +1,11 @@
-import { Box, Container } from '@mui/material';
-import Navbar from '../components/Navbar';
-import Feed from './Feed';
+import { Box, Container } from "@mui/material";
+import Navbar from "../components/Navbar";
+import Feed from "./Feed";
 
-const Layout = ({ children }) => {
+const Layout = ({ children }: any) => {
   return (
     <>
-      <Box sx={{ backgroundColor: 'white' }}>
+      <Box sx={{ backgroundColor: "white" }}>
         <Navbar />
         <Feed />
         <Container>{children}</Container>
