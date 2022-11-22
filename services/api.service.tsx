@@ -2,17 +2,20 @@ import axios from "axios";
 import tokenService from "./token.service";
 //create axios instance with base url
 const api = axios.create({
-  baseURL: "http://localhost:3000/",
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
 });
 
 //inject x-access-token header with axios interceptor
-api.interceptors.request.use((config: any) => {
-  const token = tokenService.getAccessToken();
-  config.headers["x-access-token"] = token;
-  return config;
-}, (error: any) => {
-  return Promise.reject(error);
-});
+api.interceptors.request.use(
+  (config: any) => {
+    const token = tokenService.getAccessToken();
+    config.headers["x-access-token"] = token;
+    return config;
+  },
+  (error: any) => {
+    return Promise.reject(error);
+  }
+);
 
 //manage token refresh with axios interceptor
 // api.interceptors.response.use(

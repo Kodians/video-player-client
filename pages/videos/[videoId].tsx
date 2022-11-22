@@ -27,7 +27,7 @@ function PlayVideo() {
   const fetchVideoToPlay = async (id: string) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/videos/${id}?cacheId=${id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/videos/${id}?cacheId=${id}`,
         {
           cache: "default",
         }

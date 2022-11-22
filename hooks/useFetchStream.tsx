@@ -1,9 +1,9 @@
-import { URLPattern } from 'next/server';
-import { useQuery } from 'react-query';
+import { URLPattern } from "next/server";
+import { useQuery } from "react-query";
 
 const fetchStream = async (videoId: any) => {
   const response = await fetch(
-    `http://localhost:3000/videos/${videoId}?cacheId=${videoId}`
+    `${process.env.NEXT_PUBLIC_API_URL}/videos/${videoId}?cacheId=${videoId}`
   );
   const newResponse = new Response(response.body);
   const blob = await newResponse.blob();

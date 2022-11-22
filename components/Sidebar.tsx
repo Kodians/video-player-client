@@ -5,7 +5,6 @@ import { useContext, useEffect } from 'react';
 
 //import { categories } from '../utils/constants';
 import { useFetch } from '../hooks/useFetch';
-import { useInfiniteFetch } from '../hooks/useInfiniteFetch';
 
 const Categories = ({ selectedCategory, setSelectedCategory }: any) => {
   let {
@@ -40,7 +39,7 @@ const Categories = ({ selectedCategory, setSelectedCategory }: any) => {
         flexDirection: { md: 'column' },
       }}
     >
-      {categories.map((category) => (
+      {categories.map((category: any) => (
         <button
           className="category-btn"
           onClick={() => handleCategoryClicked(category.name, category._id)}

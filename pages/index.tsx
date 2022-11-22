@@ -5,6 +5,7 @@ import NextLink from 'next/link';
 import { Store } from '../utils/store';
 import { useContext, useEffect, useRef } from 'react';
 import { useInfiniteFetch } from '../hooks/useInfiniteFetch';
+import VideoSkeleton from '../components/Skeleton';
 
 const Home: NextPage = () => {
   let {
@@ -39,7 +40,7 @@ const Home: NextPage = () => {
       url.current = `/categories/${categoryId}/videos/thumbnails`;
     }
     data?.pages.forEach((page) => {
-      page.data.forEach((item: any) => {
+      page?.data.forEach((item: any) => {
         videos.push(item);
       });
     });
@@ -47,7 +48,19 @@ const Home: NextPage = () => {
   }, [videos, categoryId, data?.pages, dispatch]);
 
   if (isLoading) {
-    return <h2>Loading...</h2>;
+    return (
+      <>
+        <Stack
+          direction="row"
+          flexWrap="wrap"
+          justifyContent="start"
+          alignItems="start"
+          gap={2}
+        >
+          <VideoSkeleton skeletons={4} />
+        </Stack>
+      </>
+    );
   }
 
   if (isError) {
@@ -63,7 +76,6 @@ const Home: NextPage = () => {
         alignItems="start"
         gap={2}
       >
-        {console.log(videos)}
         {videos.map((item: any) => {
           return (
             <Box key={item.metadata.videoId}>
@@ -75,6 +87,7 @@ const Home: NextPage = () => {
             </Box>
           );
         })}
+        {isFetching && isFetchingNextPage && <VideoSkeleton skeletons={4} />}
       </Stack>
       <button disabled={!hasNextPage} onClick={() => fetchNextPage()}>
         Load More
