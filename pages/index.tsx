@@ -1,10 +1,19 @@
-import type { NextPage } from "next";
-import { Stack, Box, Link } from "@mui/material";
-import VideoCard from "../components/VideoCard";
-import NextLink from "next/link";
-import { useInfiniteFetch } from "../hooks/useInfiniteFetch";
+import type { NextPage } from 'next';
+import { Stack, Box, Link } from '@mui/material';
+import VideoCard from '../components/VideoCard';
+import NextLink from 'next/link';
+import { Store } from '../utils/store';
+import { useContext, useEffect, useRef } from 'react';
+import { useInfiniteFetch } from '../hooks/useInfiniteFetch';
 
 const Home: NextPage = () => {
+  let {
+    state: { videos, categoryId },
+    dispatch,
+  }: any = useContext(Store);
+
+  let url = useRef('/videos/thumbnails');
+
   const {
     data,
     isLoading,
@@ -14,7 +23,7 @@ const Home: NextPage = () => {
     isFetchingNextPage,
     hasNextPage,
     fetchNextPage,
-  } = useInfiniteFetch("/videos/thumbnails", {
+  } = useInfiniteFetch(url.current, {
     getNextPageParam: (_lastPage: any, pages: any) => {
       if (pages.length < 5) {
         return pages.length + 1;
@@ -23,6 +32,19 @@ const Home: NextPage = () => {
     },
     staleTime: Infinity,
   });
+
+  useEffect(() => {
+    if (categoryId) {
+      videos.length = 0;
+      url.current = `/categories/${categoryId}/videos/thumbnails`;
+    }
+    data?.pages.forEach((page) => {
+      page.data.forEach((item: any) => {
+        videos.push(item);
+      });
+    });
+    dispatch({ type: 'VIDEOS_CHANGED', payload: videos });
+  }, [videos, categoryId, data?.pages, dispatch]);
 
   if (isLoading) {
     return <h2>Loading...</h2>;
@@ -41,24 +63,23 @@ const Home: NextPage = () => {
         alignItems="start"
         gap={2}
       >
-        {data?.pages.map((page: any) => {
-          return page.data.map((item: any) => {
-            return (
-              <Box key={item.metadata.videoId}>
-                <NextLink href={`/videos/${item.metadata.videoId}`} passHref>
-                  <Link underline="none">
-                    <VideoCard video={item} />
-                  </Link>
-                </NextLink>
-              </Box>
-            );
-          });
+        {console.log(videos)}
+        {videos.map((item: any) => {
+          return (
+            <Box key={item.metadata.videoId}>
+              <NextLink href={`/videos/${item.metadata.videoId}`} passHref>
+                <Link underline="none">
+                  <VideoCard video={item} />
+                </Link>
+              </NextLink>
+            </Box>
+          );
         })}
       </Stack>
       <button disabled={!hasNextPage} onClick={() => fetchNextPage()}>
         Load More
       </button>
-      <div>{isFetching && isFetchingNextPage ? "Fetching..." : null}</div>
+      <div>{isFetching && isFetchingNextPage ? 'Fetching...' : null}</div>
     </>
   );
 };

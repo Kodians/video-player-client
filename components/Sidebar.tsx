@@ -1,11 +1,27 @@
 import React from 'react';
 import { Stack } from '@mui/material';
+import { Store } from '../utils/store';
+import { useContext, useEffect } from 'react';
 
 //import { categories } from '../utils/constants';
 import { useFetch } from '../hooks/useFetch';
+import { useInfiniteFetch } from '../hooks/useInfiniteFetch';
 
 const Categories = ({ selectedCategory, setSelectedCategory }: any) => {
+  let {
+    dispatch,
+    state: { categories, categoryId },
+  }: any = useContext(Store);
+
   const { data, isLoading, isError, error } = useFetch('/categories');
+
+  categories = data?.data.categories;
+
+  const handleCategoryClicked = (categoryName: any, idCategory: any) => {
+    categoryId = idCategory;
+    setSelectedCategory(categoryName);
+    dispatch({ type: 'CATEGORY_CLICKED', payload: categoryId });
+  };
 
   if (isLoading) {
     return <h2>Loading...</h2>;
@@ -24,10 +40,10 @@ const Categories = ({ selectedCategory, setSelectedCategory }: any) => {
         flexDirection: { md: 'column' },
       }}
     >
-      {data.data.categories.map((category) => (
+      {categories.map((category) => (
         <button
           className="category-btn"
-          onClick={() => setSelectedCategory(category.name)}
+          onClick={() => handleCategoryClicked(category.name, category._id)}
           style={{
             background: category.name === selectedCategory ? '#2F80ED' : '',
             color: 'white',
