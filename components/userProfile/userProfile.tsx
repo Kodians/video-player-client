@@ -19,6 +19,8 @@ function userProfile() {
     const [isExtraSmallScreenSize, setIsExtraSmallScreenSize] = React.useState(false)
 
     const extraSmallScreen = useMediaQuery('(max-width:1000px)');
+    const largeWidth = useMediaQuery('(min-width:1000px)');
+    const largminWidth = useMediaQuery('(max-width:999px)')
 
 
     React.useEffect(() => {
@@ -27,10 +29,10 @@ function userProfile() {
     return (
         <div>
             <Grid container alignItems='center' direction={extraSmallScreen ? "column-reverse":"row"} spacing={2} sx={{overflowX:'scroll'}} >
-                <Grid item style={extraSmallScreen ? { width:"100%" } : {} }>
+                <Grid item style={extraSmallScreen ? { width:"100%" } : {} }  width={largminWidth ? "width: 720":"width: 720"}>
                     <Card 
                         elevation={0} style={{ backgroundColor: '#F4F4F2', width: extraSmallScreen ? "100%" : 500}} 
-                        sx={{ width: '500px', height: '321px' }}
+                        sx={{ width: '700px', height: '321px' }}
                     >
                         <Box sx={{ my: 1, mx: 2 }}>
                             <Grid container alignItems="center">
@@ -66,7 +68,7 @@ function userProfile() {
                     </Card>
                 </Grid>
                 <Grid item>
-                    <Card sx={{ width: '300px', height: '250px' }} elevation={0} style={{ margin: '15px 0', backgroundColor: '#F4F4F2', height: 'fit-content' }}>
+                    <Card sx={{ width: '300px', height: '250px' }} elevation={0} style={{ margin: '15px 0', backgroundColor: '#F4F4F2', height: 'fit-content', width: largminWidth ? 720 :  '' }}>
                         <CardMedia
                             component="img"
                             height="140"
@@ -88,8 +90,8 @@ function userProfile() {
                 </Card>
                 </Grid>
             </Grid>
-            <Grid container >
-                <Grid item>
+            <Grid container  width={largminWidth ? "width: 720":"width: 720"}>
+                <Grid item style={largeWidth ? {width:820} : {width:720 }}>
                 <Card elevation={0} style={{ margin: '15px 0', backgroundColor: '#F4F4F2' }}>
                         <Box sx={{ my: 3, mx: 2 }}>
                             <Grid container alignItems="center">
