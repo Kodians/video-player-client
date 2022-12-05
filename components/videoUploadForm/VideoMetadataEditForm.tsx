@@ -25,14 +25,24 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export const VideoMetadataEditForm = ({ videoMetadata }: any) => {
+export const VideoMetadataEditForm = ({
+  videoMetadata,
+  setIsShowingEditForm,
+}: any) => {
   const classes = useStyles();
   const queryClient = useQueryClient();
-  const { id, title, description, userId, videoId } = videoMetadata;
+  const {
+    id,
+    title,
+    description,
+    userId,
+    videoId,
+    categoryId: videoInitialCategoryId,
+  } = videoMetadata;
   const [metadata, setMetadata] = useState<any>({
     title,
     description,
-    categoryId: "Choisir une catégorie",
+    categoryId: videoInitialCategoryId,
     thumbnail: null,
   });
 
@@ -150,6 +160,7 @@ export const VideoMetadataEditForm = ({ videoMetadata }: any) => {
             },
           },
         });
+        setIsShowingEditForm(false);
       } else if (
         thumbnail !== null &&
         thumbnail !== undefined &&
@@ -172,6 +183,7 @@ export const VideoMetadataEditForm = ({ videoMetadata }: any) => {
             params: { title, description, categoryId },
           },
         });
+        setIsShowingEditForm(false);
       } else {
         setAlert("Veuillez remplir tous les champs");
         setTimeout(() => {
