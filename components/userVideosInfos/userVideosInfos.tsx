@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { List, ListItem } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { IconButton, Stack } from "@mui/material";
@@ -37,7 +37,7 @@ const useStyles = makeStyles(() => ({
 const UserVideosInfos = () => {
   const classes = useStyles();
 
-  const [userId, setUserId] = React.useState<string>();
+  const [userId, setUserId] = useState<string>();
 
   const {
     data,
@@ -59,9 +59,8 @@ const UserVideosInfos = () => {
     },
   });
 
-  const [isShowingEditForm, setIsShowingEditForm] =
-    React.useState<boolean>(false);
-  const [videoToEditMetadata, setVideoToEditMetadata] = React.useState<any>();
+  const [isShowingEditForm, setIsShowingEditForm] = useState<boolean>(false);
+  const [videoToEditMetadata, setVideoToEditMetadata] = useState<any>();
 
   const handleClose = () => {
     setIsShowingEditForm(false);
@@ -84,13 +83,15 @@ const UserVideosInfos = () => {
   return (
     <>
       <List>
-        {data?.pages.map((page: any) => {
+        {data?.pages.map((page: any, pageIndex: number) => {
           return page.data.map((video: any, index: any) => {
-            const { id, videoId, title, description } = video;
+            const { id, videoId, title, description, categoryId } = video;
             return (
               <>
                 <ListItem key={title} className={classes.listItem} divider>
-                  <p>{index + 1}</p>
+                  <p>
+                    {pageIndex === 0 ? index + 1 : index + page.data.length + 1}
+                  </p>
                   <p>
                     <Link href={`/videos/${videoId}`}>
                       <a>
@@ -123,8 +124,8 @@ const UserVideosInfos = () => {
                         size="medium"
                         onClick={handleClose}
                       >
-                        <CloseIcon fontSize="inherit" />
-                        Fermer
+                        <CloseIcon fontSize="inherit" color="error" />
+                        {/* Fermer */}
                       </IconButton>
                     </Stack>
                     <VideoMetadataEditForm
@@ -134,6 +135,7 @@ const UserVideosInfos = () => {
                         userId,
                         videoId,
                         id,
+                        categoryId,
                       }}
                       setIsShowingEditForm={setIsShowingEditForm}
                     />
