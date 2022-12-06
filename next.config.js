@@ -20,6 +20,10 @@ const nextConfig = {
   },
   assetPrefix: assetPrefix,
   basePath: basePath,
+  images: {
+    loader: "imgix",
+    path: "",
+  },
 };
 
 module.exports = nextConfig;
