@@ -24,6 +24,9 @@ const nextConfig = {
     loader: "imgix",
     path: "https://beingdev.imgix.net/",
   },
+  env: {
+    NEXT_PUBLIC_API_URL: "http://localhost:3000",
+  },
 };
 
 module.exports = nextConfig;
