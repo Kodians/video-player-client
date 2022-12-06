@@ -1,5 +1,7 @@
 # Documentation
 
+## How to use this app
+
 <!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
 
