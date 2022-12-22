@@ -1,5 +1,4 @@
 import axios from "axios";
-import tokenService from "./token.service";
 //create axios instance with base url
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -8,8 +7,7 @@ const api = axios.create({
 //inject x-access-token header with axios interceptor
 api.interceptors.request.use(
   (config: any) => {
-    const token = tokenService.getAccessToken();
-    config.headers["x-access-token"] = token;
+    // config.headers["x-access-token"] = token;
     return config;
   },
   (error: any) => {

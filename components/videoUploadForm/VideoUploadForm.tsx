@@ -1,13 +1,19 @@
-import { useState, ChangeEvent, useEffect, useCallback } from "react";
+import {
+  useState,
+  ChangeEvent,
+  useEffect,
+  useCallback,
+  useContext,
+} from "react";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import { Grid, TextareaAutosize, Button } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { useFetch } from "../../hooks/useFetch";
 import { useInsert } from "../../hooks/useInsert";
-import tokenService from "../../services/token.service";
 import Alert from "@mui/material/Alert";
 import { LoadingBackdrop } from "../LoadingBackDrop";
+import { Store } from "../../utils/store";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -24,6 +30,9 @@ const useStyles = makeStyles(() => ({
 
 export const VideoUploadForm = () => {
   const classes = useStyles();
+  const {
+    state: { userInfo },
+  }: any = useContext(Store);
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [categoryId, setcategoryId] = useState<string>("Choisir une catégorie");
@@ -171,9 +180,9 @@ export const VideoUploadForm = () => {
   ]);
 
   useEffect(() => {
-    const user = tokenService.getUser();
-    if (user && user.userId) {
-      setUserId(user.userId);
+    if (userInfo && userInfo.userId) {
+      console.log(userInfo.userId);
+      setUserId(userInfo.userId);
     }
 
     // insert video thumbnail after video is inserted

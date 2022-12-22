@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { List, ListItem } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { IconButton, Stack } from "@mui/material";
@@ -8,9 +8,9 @@ import videoIcon from "../../assets/images/video.svg";
 import React from "react";
 import { ActionPopover } from "./ActionPopover";
 import Link from "next/link";
-import tokenService from "../../services/token.service";
 import { useInfiniteFetch } from "../../hooks/useInfiniteFetch";
 import { VideoMetadataEditForm } from "../videoUploadForm/VideoMetadataEditForm";
+import { Store } from "../../utils/store";
 
 const useStyles = makeStyles(() => ({
   listItem: {
@@ -36,7 +36,9 @@ const useStyles = makeStyles(() => ({
 
 const UserVideosInfos = () => {
   const classes = useStyles();
-
+  const {
+    state: { userInfo },
+  }: any = useContext(Store);
   const [userId, setUserId] = useState<string>();
 
   const {
@@ -67,9 +69,9 @@ const UserVideosInfos = () => {
   };
 
   useEffect(() => {
-    const user = tokenService.getUser();
-    if (user && user.userId) {
-      setUserId(user.userId);
+    if (userInfo && userInfo.userId) {
+      console.log(userInfo.userId);
+      setUserId(userInfo.userId);
     }
   }, []);
 
