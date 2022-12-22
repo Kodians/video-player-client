@@ -14,6 +14,8 @@ import UserVideosInfos from "../userVideosInfos/userVideosInfos";
 import UserProfile from "../userProfile/userProfile";
 import Link from "next/link";
 import { IconButton } from "@mui/material";
+import { Store } from "../../utils/store";
+import jsCookie from "js-cookie";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -77,10 +79,17 @@ function a11yProps(index: number) {
 
 export const UserAccountSideBar = () => {
   const classes = useStyles();
+  const { dispatch }: any = React.useContext(Store);
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
+  };
+
+  const logoutClickHandler = () => {
+    dispatch({ type: "USER_LOGOUT" });
+    jsCookie.remove("userInfo");
+    // router.push("/");
   };
 
   return (
@@ -139,7 +148,7 @@ export const UserAccountSideBar = () => {
           {...a11yProps(2)}
         />
       </Tabs>
-      <Link href={"/"}>
+      <Link onClick={logoutClickHandler} href={"/"} passHref>
         <IconButton
           sx={{
             position: "absolute",

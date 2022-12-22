@@ -7,13 +7,16 @@ import EditIcon from "@mui/icons-material/Edit";
 import { IconButton, List, ListItem } from "@mui/material";
 import { useQueryClient } from "react-query";
 import { useDelete } from "../../hooks/useDelete";
-import tokenService from "../../services/token.service";
+import { Store } from "../../utils/store";
 
 export function ActionPopover({
   videoId,
   setIsShowingEditForm,
   setVideoToEditMetadata,
 }: any) {
+  const {
+    state: { userInfo },
+  }: any = React.useContext(Store);
   const [userId, setUserId] = React.useState<string>();
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
@@ -67,9 +70,8 @@ export function ActionPopover({
   };
 
   React.useEffect(() => {
-    const user = tokenService.getUser();
-    if (user && user.userId) {
-      setUserId(user.userId);
+    if (userInfo && userInfo.userId) {
+      setUserId(userInfo.userId);
     }
   }, [videoId]);
 

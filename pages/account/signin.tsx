@@ -15,7 +15,6 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Link from "next/link";
 import { useInsert } from "../../hooks/useInsert";
 import { useRouter } from "next/router";
-import tokenService from "../../services/token.service";
 import jsCookie from "js-cookie";
 import { Store } from "../../utils/store";
 
@@ -40,13 +39,11 @@ function Copyright(props: any) {
 const theme = createTheme();
 
 export default function SignIn() {
-  const { state, dispatch }: any = React.useContext(Store);
-  const { userInfo } = state;
+  const { dispatch }: any = React.useContext(Store);
   const router = useRouter();
   const { mutate } = useInsert("/user/login", {
     onSuccess: (data: any) => {
       if (data.status === 200 && data.data) {
-        tokenService.setUser(data.data);
         dispatch({ type: "USER_LOGIN", payload: data.data });
         jsCookie.set("userInfo", JSON.stringify(data.data));
         router.push("/");
