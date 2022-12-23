@@ -8,7 +8,7 @@
     "export": "next export",
     "start": "next start",
     "test": "jest --watchAll",
-    "coverage": "jest --coverage --watchAll",
+    "coverage": "jest --coverage",
     "lint": "next lint"
   },
   "dependencies": {
