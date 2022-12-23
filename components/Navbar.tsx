@@ -11,7 +11,6 @@ import jsCookie from "js-cookie";
 const Navbar = () => {
   const router = useRouter();
   const { state, dispatch }: any = useContext(Store);
-  const { userInfo } = state;
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -35,8 +34,8 @@ const Navbar = () => {
   };
 
   useEffect(() => {
-    setIsLoggedIn(Boolean(userInfo));
-  }, [userInfo]);
+    setIsLoggedIn(Boolean(state?.userInfo));
+  }, [state?.userInfo]);
 
   return (
     <Stack
@@ -71,7 +70,7 @@ const Navbar = () => {
             onClick={loginClickHandler}
             style={{ color: "white", fontWeight: "bold" }}
           >
-            {userInfo?.firstName}
+            {state?.userInfo?.firstName}
           </Button>
           <Menu
             id="simple-menu"
