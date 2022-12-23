@@ -15,10 +15,12 @@ jobs:
         with:
           node-version: 16
           cache: npm
-
-      - name: Build
+      - name: Test Before Build
         run: |
           yarn install --frozen-lockfile
+          yarn run test
+      - name: Build
+        run: |
           yarn run build
           yarn run export
           touch out/.nojekyll
