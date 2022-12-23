@@ -1,11 +1,11 @@
-import type { NextPage } from 'next';
-import { Stack, Box, Link } from '@mui/material';
-import VideoCard from '../components/VideoCard';
-import NextLink from 'next/link';
-import { Store } from '../utils/store';
-import { useContext, useEffect, useRef } from 'react';
-import { useInfiniteFetch } from '../hooks/useInfiniteFetch';
-import VideoSkeleton from '../components/Skeleton';
+import type { NextPage } from "next";
+import { Stack, Box, Link } from "@mui/material";
+import VideoCard from "../components/VideoCard";
+import NextLink from "next/link";
+import { Store } from "../utils/store";
+import { useContext, useEffect, useRef } from "react";
+import { useInfiniteFetch } from "../hooks/useInfiniteFetch";
+import VideoSkeleton from "../components/Skeleton";
 
 const Home: NextPage = () => {
   let {
@@ -13,7 +13,7 @@ const Home: NextPage = () => {
     dispatch,
   }: any = useContext(Store);
 
-  let url = useRef('/videos/thumbnails');
+  let url = useRef("/videos/thumbnails");
 
   const {
     data,
@@ -44,7 +44,7 @@ const Home: NextPage = () => {
         videos.push(item);
       });
     });
-    dispatch({ type: 'VIDEOS_CHANGED', payload: videos });
+    dispatch({ type: "VIDEOS_CHANGED", payload: videos });
   }, [videos, categoryId, data?.pages, dispatch]);
 
   if (isLoading) {
@@ -75,6 +75,7 @@ const Home: NextPage = () => {
         justifyContent="start"
         alignItems="start"
         gap={2}
+        role="videos"
       >
         {videos.map((item: any) => {
           return (
@@ -92,7 +93,7 @@ const Home: NextPage = () => {
       <button disabled={!hasNextPage} onClick={() => fetchNextPage()}>
         Load More
       </button>
-      <div>{isFetching && isFetchingNextPage ? 'Fetching...' : null}</div>
+      <div>{isFetching && isFetchingNextPage ? "Fetching..." : null}</div>
     </>
   );
 };
