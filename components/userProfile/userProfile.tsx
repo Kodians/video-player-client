@@ -13,23 +13,42 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { width } from '@mui/system';
+import { Store } from '../../utils/store';
 
-
-function userProfile() {
+function UserProfile() {
     const [isExtraSmallScreenSize, setIsExtraSmallScreenSize] = React.useState(false)
 
     const extraSmallScreen = useMediaQuery('(max-width:1000px)');
     const largeWidth = useMediaQuery('(min-width:1000px)');
     const largminWidth = useMediaQuery('(max-width:999px)')
 
+    const { state }: any = React.useContext(Store);
+  const { userInfo } = state;
+
+  const [userData, setUserData] = React.useState({
+    firstName: userInfo.firstName,
+    lastName: userInfo.lastName,
+    email: userInfo.email,
+    password:""
+  })
+
+  const handleInputChange = (event:any) => {
+    setUserData((prevData: any) => {
+        return {...prevData, [event.target.name]:event.target.value
+    }})
+  }
+
+  const editUserInfo = () => {
+    console.log(userData)
+  }
 
     React.useEffect(() => {
-        setIsExtraSmallScreenSize(!isExtraSmallScreenSize)
+        setIsExtraSmallScreenSize(prevIsExtraSmallScreenSize => !prevIsExtraSmallScreenSize)
     }, [extraSmallScreen])
     return (
         <div>
-            <Grid container alignItems='center' direction={extraSmallScreen ? "column-reverse":"row"} spacing={2} sx={{overflowX:'scroll'}} >
-                <Grid item style={extraSmallScreen ? { width:"100%" } : {} }  width={largminWidth ? "width: 720":"width: 720"}>
+            <Grid container alignItems='center' direction={extraSmallScreen ? "column-reverse":"row"} spacing={2} >
+                <Grid item style={extraSmallScreen ? { width:"100%" } : {} }  width={largminWidth ? "width: 720":"width: 520"}>
                     <Card 
                         elevation={0} style={{ backgroundColor: '#F4F4F2', width: extraSmallScreen ? "100%" : 500}} 
                         sx={{ width: '700px', height: '321px' }}
@@ -80,11 +99,11 @@ function userProfile() {
                                 <Avatar alt="Photo" src="" sx={{ width: 90, height: 90, marginLeft: 'auto', marginRight: 'auto' }} />
                             </div>
                             <Typography gutterBottom variant="h6" component="div" style={{ marginTop: '10px' }}>
-                                Nom :
+                                Nom : {userInfo.lastName}
                                 <br />
-                                Prenom :
+                                Prenom : { userInfo.firstName}
                                 <br />
-                                Email:
+                                Email: { userInfo.email }
                             </Typography>
                         </CardContent>
                 </Card>
@@ -116,37 +135,42 @@ function userProfile() {
                                 <Box>
                                     <TextField
                                         id="outlined-required"
-                                        label="Username"
-                                        defaultValue="Username"
+                                        label="First Name"
+                                        name="firstName"
+                                        value={userData.firstName}
+                                        onChange={handleInputChange}
                                         fullWidth
                                     />
+
                                     <TextField
-                                        id="outlined"
-                                        label="Fistname"
-                                        defaultValue="Frist name"
+                                        id="outlined-password-input"
+                                        label="Last Name"
+                                        name='lastName'
+                                        value={userData.lastName}
+                                        onChange={handleInputChange}
+                                        autoComplete="current-password"
                                         fullWidth
                                     />
                                 </Box>
                                 <Box>
-                                    <TextField
-                                        id="outlined-password-input"
-                                        label="Lastname"
-                                        defaultValue="Last name"
-                                        autoComplete="current-password"
-                                        fullWidth
-                                    />
+                            
                                     <TextField
                                         id="outlined-read-only-input"
                                         label="Password"
                                         type="password"
+                                        name='password'
+                                        value={userData.password}
+                                        onChange={handleInputChange}
                                         fullWidth
                                     />
-                                </Box>
-                                <Box sx={{ width: 500, maxWidth: '100%' }}>
+
                                     <TextField
                                         id="outlined-number"
                                         label="Adresse email"
                                         type="email"
+                                        name="name"
+                                        value={userData.email}
+                                        onChange={handleInputChange}
                                         defaultValue="email@gmail.com"
                                         fullWidth
                                     />
@@ -157,6 +181,7 @@ function userProfile() {
                             <Button
                                 variant="contained"
                                 color="success"
+                                onClick={editUserInfo}
                             >
                                 Save
                             </Button>
@@ -167,4 +192,4 @@ function userProfile() {
         </div>
     )
 }
-export default userProfile
+export default UserProfile
