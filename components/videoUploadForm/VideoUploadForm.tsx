@@ -246,23 +246,25 @@ export const VideoUploadForm = () => {
         </Grid>
         <Grid item container spacing={2}>
           <Grid item xs={12} sm={6}>
-            <label htmlFor="contained-button-file">Charger la vidéo</label>
+            <label htmlFor="upload-video-file">Charger la vidéo</label>
             <br />
             <input
               accept="video/*"
-              id="contained-button-file"
+              id="upload-video-file"
               type="file"
+              role={"upload-video-file"}
               onChange={handleVideoUpload}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <label htmlFor="contained-button-file">
+            <label htmlFor="upload-video-thumbnail-file">
               Charger la photo de couverture
-            </label>{" "}
+            </label>
             <br />
             <input
               accept="image/*"
-              id="contained-button-file"
+              id="upload-video-thumbnail-file"
+              role="upload-video-thumbnail-file"
               type="file"
               onChange={handleVideoThumbnailUpload}
             />
