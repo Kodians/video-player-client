@@ -33,6 +33,10 @@ describe("Render Video upload form", () => {
     }));
   });
 
+  afterAll(() => {
+    jest.clearAllMocks();
+  });
+
   test("Should render video upload form correctly", () => {
     render(<VideoUploadForm />);
     const videoUploadForm = screen.getByRole("video-upload-form");
@@ -111,6 +115,10 @@ describe("Video upload form interactions", () => {
     userEvent.setup();
   });
 
+  afterAll(() => {
+    jest.clearAllMocks();
+  });
+
   test("Should display video title input value correctly", async () => {
     render(<VideoUploadForm />);
     const videoTitleInput = screen.getByRole("textbox", {
@@ -150,7 +158,7 @@ describe("Video upload form interactions", () => {
     expect((videoUploadInput as any).files).toHaveLength(1);
   });
 
-  test("Should display video thumbnail upload input value correctly", async () => {
+  test("Should change video thumbnail upload input value", async () => {
     render(<VideoUploadForm />);
     const file = new File(["(⌐□_□)"], "my-video-thumbnail.jpg", {
       type: "image/*",
@@ -163,5 +171,63 @@ describe("Video upload form interactions", () => {
     expect((videoThumbnailUploadInput as any).files[0]).toBe(file);
     expect((videoThumbnailUploadInput as any).files.item(0)).toBe(file);
     expect((videoThumbnailUploadInput as any).files).toHaveLength(1);
+  });
+
+  test("Should error message not be displayed initially", () => {
+    render(<VideoUploadForm />);
+    const errorMessage = screen.queryByText(
+      /veuillez remplir tous les champs/i
+    );
+    expect(errorMessage).not.toBeInTheDocument();
+  });
+
+  // test("Should show error message when submitting video upload form without filling all inputs", async () => {
+  //   render(<VideoUploadForm />);
+  //   const videoUploadButton = screen.getByRole("button", { name: /publier/i });
+  //   await userEvent.click(videoUploadButton);
+  //   const errorMessage = screen.queryByText(
+  //     /veuillez remplir tous les champs/i
+  //   );
+  //   expect(errorMessage).toBeInTheDocument();
+  // });
+
+  test("Should error message not be displayed when submitting video upload form after filling all inputs", async () => {
+    render(<VideoUploadForm />);
+    const videoTitleInput = screen.getByRole("textbox", {
+      name: /titre de la vidéo/i,
+    });
+    await userEvent.type(videoTitleInput, "video title");
+
+    const videoDescriptionInput = screen.getByRole("textbox", {
+      name: /maximum height/i,
+    });
+    await userEvent.type(videoDescriptionInput, "video description");
+
+    const videoCategorySelect = screen.getByRole("button", {
+      name: /choisir une catégorie/i,
+    });
+    await userEvent.click(videoCategorySelect);
+    const category1 = screen.getByRole("option", { name: /category 1/i });
+    await userEvent.click(category1);
+
+    const file = new File(["(⌐□_□)"], "myvideo.mp4", { type: "video/mp4" });
+    const videoUploadInput = screen.getByLabelText(/charger la vidéo/i);
+    await userEvent.upload(videoUploadInput, file);
+
+    const file2 = new File(["(⌐□_□)"], "my-video-thumbnail.jpg", {
+      type: "image/*",
+    });
+    const videoThumbnailUploadInput = screen.getByRole(
+      "upload-video-thumbnail-file"
+    );
+    await userEvent.upload(videoThumbnailUploadInput, file2);
+
+    const videoUploadButton = screen.getByRole("button", { name: /publier/i });
+    await userEvent.click(videoUploadButton);
+
+    const errorMessage = screen.queryByText(
+      /veuillez remplir tous les champs/i
+    );
+    expect(errorMessage).not.toBeInTheDocument();
   });
 });
