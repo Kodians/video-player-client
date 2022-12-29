@@ -35,7 +35,7 @@ export const VideoUploadForm = () => {
   }: any = useContext(Store);
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
-  const [categoryId, setcategoryId] = useState<string>("Choisir une catégorie");
+  const [categoryId, setcategoryId] = useState<string>();
   const [video, setVideo] = useState<File>();
   const [videoThumbnail, setVideoThumbnail] = useState<File>();
   const [userId, setUserId] = useState<string>();
@@ -96,8 +96,7 @@ export const VideoUploadForm = () => {
           description !== null &&
           description !== "" &&
           categoryId !== undefined &&
-          categoryId !== null &&
-          categoryId !== "Choisir une catégorie"
+          categoryId !== null
         ) {
           const videoForm = new FormData();
           videoForm.append("file", video);
@@ -136,7 +135,6 @@ export const VideoUploadForm = () => {
       if (
         categoryId !== undefined &&
         categoryId !== null &&
-        categoryId !== "Choisir une catégorie" &&
         description !== undefined &&
         description !== null &&
         title !== undefined &&
@@ -201,7 +199,7 @@ export const VideoUploadForm = () => {
   }
 
   return (
-    <div className={classes.root}>
+    <div className={classes.root} role="video-upload-form">
       <Grid
         container
         flexDirection="column"
@@ -231,7 +229,7 @@ export const VideoUploadForm = () => {
               sx={{ width: "100% !important" }}
               id="outlined-select-categoryId"
               select
-              label="Catégorie"
+              label="Choisir une catégorie"
               value={categoryId}
               onChange={handleCategoryIdChange}
             >
