@@ -83,50 +83,38 @@ export const VideoUploadForm = () => {
   const saveVideo = () => {
     if (userId !== undefined && userId !== null) {
       if (
+        title !== undefined &&
+        title !== null &&
+        title !== "" &&
+        description !== undefined &&
+        description !== null &&
+        description !== "" &&
+        categoryId !== undefined &&
+        categoryId !== null &&
+        categoryId !== "" &&
         video !== undefined &&
         video !== null &&
         videoThumbnail !== undefined &&
         videoThumbnail !== null
       ) {
-        if (
-          title !== undefined &&
-          title !== null &&
-          title !== "" &&
-          description !== undefined &&
-          description !== null &&
-          description !== "" &&
-          categoryId !== undefined &&
-          categoryId !== null
-        ) {
-          const videoForm = new FormData();
-          videoForm.append("file", video);
-          insertVideo({
-            data: videoForm,
-            options: {
-              headers: {
-                "Content-Type": "multipart/form-data",
-              },
-              params: { title, description, categoryId },
+        const videoForm = new FormData();
+        videoForm.append("file", video);
+        insertVideo({
+          data: videoForm,
+          options: {
+            headers: {
+              "Content-Type": "multipart/form-data",
             },
-          });
-          setIsFireUploadThumbnail(true);
-        } else {
-          setAlert("Veuillez remplir tous les champs");
-          setTimeout(() => {
-            setAlert("");
-          }, 3000);
-        }
+            params: { title, description, categoryId },
+          },
+        });
+        setIsFireUploadThumbnail(true);
       } else {
-        setAlert("Veuillez choisir une video et une miniature");
+        setAlert("Veuillez remplir tous les champs");
         setTimeout(() => {
           setAlert("");
         }, 3000);
       }
-    } else {
-      setAlert("Vous devez être connecté pour publier une vidéo");
-      setTimeout(() => {
-        setAlert("");
-      }, 3000);
     }
   };
 
@@ -230,7 +218,7 @@ export const VideoUploadForm = () => {
               id="outlined-select-categoryId"
               select
               label="Choisir une catégorie"
-              value={categoryId}
+              value={categoryId || ""}
               onChange={handleCategoryIdChange}
             >
               {data?.data?.categories.map((categoryId: any) => {
