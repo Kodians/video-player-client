@@ -1,11 +1,11 @@
-import type { NextPage } from "next";
-import { Stack, Box, Link } from "@mui/material";
-import VideoCard from "../components/VideoCard";
-import NextLink from "next/link";
-import { Store } from "../utils/store";
-import { useContext, useEffect, useRef } from "react";
-import { useInfiniteFetch } from "../hooks/useInfiniteFetch";
-import VideoSkeleton from "../components/Skeleton";
+import type { NextPage } from 'next';
+import { Stack, Box, Link } from '@mui/material';
+import VideoCard from '../components/VideoCard';
+import NextLink from 'next/link';
+import { Store } from '../utils/store';
+import { useContext, useEffect, useState } from 'react';
+import { useInfiniteFetch } from '../hooks/useInfiniteFetch';
+import VideoSkeleton from '../components/Skeleton';
 
 const Home: NextPage = () => {
   let {
@@ -13,7 +13,7 @@ const Home: NextPage = () => {
     dispatch,
   }: any = useContext(Store);
 
-  let url = useRef("/videos/thumbnails");
+  const [url, setUrl] = useState('/videos/thumbnails');
 
   const {
     data,
@@ -24,7 +24,7 @@ const Home: NextPage = () => {
     isFetchingNextPage,
     hasNextPage,
     fetchNextPage,
-  } = useInfiniteFetch(url.current, {
+  } = useInfiniteFetch(url, {
     getNextPageParam: (_lastPage: any, pages: any) => {
       if (pages.length < 5) {
         return pages.length + 1;
@@ -37,14 +37,15 @@ const Home: NextPage = () => {
   useEffect(() => {
     if (categoryId) {
       videos.length = 0;
-      url.current = `/categories/${categoryId}/videos/thumbnails`;
+      setUrl(`/categories/${categoryId}/videos/thumbnails`);
     }
+    videos.length = 0;
     data?.pages.forEach((page) => {
       page?.data.forEach((item: any) => {
         videos.push(item);
       });
     });
-    dispatch({ type: "VIDEOS_CHANGED", payload: videos });
+    dispatch({ type: 'VIDEOS_CHANGED', payload: videos });
   }, [videos, categoryId, data?.pages, dispatch]);
 
   if (isLoading) {
@@ -93,7 +94,7 @@ const Home: NextPage = () => {
       <button disabled={!hasNextPage} onClick={() => fetchNextPage()}>
         Load More
       </button>
-      <div>{isFetching && isFetchingNextPage ? "Fetching..." : null}</div>
+      <div>{isFetching && isFetchingNextPage ? 'Fetching...' : null}</div>
     </>
   );
 };
