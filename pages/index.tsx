@@ -9,7 +9,7 @@ import VideoSkeleton from '../components/Skeleton';
 
 const Home: NextPage = () => {
   let {
-    state: { videos, categoryId },
+    state: { videos, categoryId, categoryName },
     dispatch,
   }: any = useContext(Store);
 
@@ -39,6 +39,10 @@ const Home: NextPage = () => {
       videos.length = 0;
       setUrl(`/categories/${categoryId}/videos/thumbnails`);
     }
+
+    if (categoryName === 'all') {
+      setUrl('/videos/thumbnails');
+    }
     videos.length = 0;
     data?.pages.forEach((page) => {
       page?.data.forEach((item: any) => {
@@ -46,7 +50,7 @@ const Home: NextPage = () => {
       });
     });
     dispatch({ type: 'VIDEOS_CHANGED', payload: videos });
-  }, [videos, categoryId, data?.pages, dispatch]);
+  }, [videos, categoryId, data?.pages, dispatch, categoryName]);
 
   if (isLoading) {
     return (

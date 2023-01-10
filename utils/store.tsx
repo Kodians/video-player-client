@@ -1,16 +1,17 @@
-import Cookies from "js-cookie";
-import { createContext, useReducer } from "react";
-import Videos from "../pages/videos";
+import Cookies from 'js-cookie';
+import { createContext, useReducer } from 'react';
+import Videos from '../pages/videos';
 
 export const Store: any = createContext(null);
 
 const initialState = {
-  userInfo: Cookies.get("userInfo")
-    ? JSON.parse(Cookies.get("userInfo") as string)
+  userInfo: Cookies.get('userInfo')
+    ? JSON.parse(Cookies.get('userInfo') as string)
     : null,
   videos: [],
   categories: [],
-  categoryId: "",
+  categoryId: '',
+  categoryName: '',
 };
 
 function reducer(
@@ -21,19 +22,26 @@ function reducer(
   }
 ) {
   switch (action.type) {
-    case "USER_LOGIN":
+    case 'USER_LOGIN':
       return { ...state, userInfo: action.payload };
-    case "USER_LOGOUT":
+    case 'USER_LOGOUT':
       return {
         ...state,
         userInfo: null,
       };
 
-    case "CATEGORY_CLICKED":
-      return { ...state, categoryId: action.payload };
+    case 'CATEGORY_CLICKED':
+      return {
+        ...state,
+        categoryId: action.payload.categoryId,
+        categoryName: action.payload.categoryName,
+      };
 
-    case "VIDEOS_CHANGED":
+    case 'VIDEOS_CHANGED':
       return { ...state, videos: action.payload };
+
+    case 'ALL_CLICKED':
+      return { ...state, categoryName: action.payload };
   }
 }
 

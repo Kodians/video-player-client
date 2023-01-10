@@ -19,7 +19,15 @@ const Categories = ({ selectedCategory, setSelectedCategory }: any) => {
   const handleCategoryClicked = (categoryName: any, idCategory: any) => {
     categoryId = idCategory;
     setSelectedCategory(categoryName);
-    dispatch({ type: 'CATEGORY_CLICKED', payload: categoryId });
+    dispatch({
+      type: 'CATEGORY_CLICKED',
+      payload: { categoryId, categoryName },
+    });
+  };
+
+  const handleAllClicked = () => {
+    setSelectedCategory('All');
+    dispatch({ type: 'ALL_CLICKED', payload: 'all' });
   };
 
   if (isLoading) {
@@ -39,6 +47,32 @@ const Categories = ({ selectedCategory, setSelectedCategory }: any) => {
         flexDirection: { md: 'column' },
       }}
     >
+      <button
+        className="category-btn"
+        onClick={() => handleAllClicked()}
+        style={{
+          background: 'All' === selectedCategory ? '#2F80ED' : '',
+          color: 'white',
+        }}
+        key={'All'}
+      >
+        <span
+          style={{
+            color: 'All' === selectedCategory ? 'white' : '#2F80ED',
+            marginRight: '15px',
+          }}
+        >
+          {/* {category.icon} */}
+        </span>
+        <span
+          style={{
+            opacity: 'All' === selectedCategory ? '1' : '0.8',
+            color: 'All' === selectedCategory ? 'white' : 'black',
+          }}
+        >
+          Toutes les vidéos
+        </span>
+      </button>
       {categories.map((category: any) => (
         <button
           className="category-btn"
