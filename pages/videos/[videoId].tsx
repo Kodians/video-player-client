@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import ReactPlayer from "react-player";
 import { Box, Stack, Skeleton } from "@mui/material";
 import VideoCard from "../../components/VideoCard";
+import NextLink from 'next/link';
 
 import { useRouter } from "next/router";
 import { useInfiniteFetch } from "../../hooks/useInfiniteFetch";
+import Link from "@mui/material/Link";
 function PlayVideo() {
   const router = useRouter();
   const { videoId } = router.query;
@@ -78,7 +80,11 @@ function PlayVideo() {
           {data?.pages.map((page: any) => {
             return page.data.map((item: any) => {
               return (
-                <VideoCard key={item._id} video={item} direction="column" />
+                <NextLink href={`/videos/${item.metadata.videoId}`} passHref>
+                  <Link underline="none">
+                  <VideoCard key={item._id} video={item} direction="column" />
+                  </Link>
+                </NextLink>
               );
             });
           })}
