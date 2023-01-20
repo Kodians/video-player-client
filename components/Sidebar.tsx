@@ -2,9 +2,11 @@ import React from 'react';
 import { Stack } from '@mui/material';
 import { Store } from '../utils/store';
 import { useContext, useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 //import { categories } from '../utils/constants';
 import { useFetch } from '../hooks/useFetch';
+
 
 const Categories = ({ selectedCategory, setSelectedCategory }: any) => {
   let {
@@ -13,6 +15,8 @@ const Categories = ({ selectedCategory, setSelectedCategory }: any) => {
   }: any = useContext(Store);
 
   const { data, isLoading, isError, error } = useFetch('/categories');
+
+  const router = useRouter();
 
   categories = data?.data.categories;
 
@@ -23,11 +27,14 @@ const Categories = ({ selectedCategory, setSelectedCategory }: any) => {
       type: 'CATEGORY_CLICKED',
       payload: { categoryId, categoryName },
     });
+
+    router.push('/');
   };
 
   const handleAllClicked = () => {
     setSelectedCategory('All');
     dispatch({ type: 'ALL_CLICKED', payload: 'all' });
+    router.push('/');
   };
 
   if (isLoading) {
@@ -70,7 +77,7 @@ const Categories = ({ selectedCategory, setSelectedCategory }: any) => {
             color: 'All' === selectedCategory ? 'white' : 'black',
           }}
         >
-          Toutes les vidéos
+          🪣Toutes les vidéos
         </span>
       </button>
       {categories.map((category: any) => (
