@@ -34,12 +34,14 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
+let nbPageIndex = 0;
 const UserVideosInfos = () => {
   const classes = useStyles();
   const {
     state: { userInfo },
   }: any = useContext(Store);
   const [userId, setUserId] = useState<string>();
+  const [numberOfPages, setNumberOfPages] = useState<number>(4);
 
   const {
     data,
@@ -54,7 +56,7 @@ const UserVideosInfos = () => {
     enabled: !!userId,
     staleTime: Infinity,
     getNextPageParam: (_lastPage: any, pages: any) => {
-      if (pages.length < 4) {
+      if (pages.length < numberOfPages) {
         return pages.length + 1;
       }
       return undefined;
@@ -81,18 +83,20 @@ const UserVideosInfos = () => {
     return <h2>{error instanceof Error && error.message}</h2>;
   }
 
+  console.log(data?.pages);
+
   return (
     <>
       <List>
         {data?.pages.map((page: any, pageIndex: number) => {
+          let nbPageIndex = 0;
           return page.data.map((video: any, index: any) => {
+            nbPageIndex = pageIndex * numberOfPages + index + 1;
             const { id, videoId, title, description, categoryId } = video;
             return (
               <>
                 <ListItem key={id} className={classes.listItem} divider>
-                  <p>
-                    {pageIndex === 0 ? index + 1 : index + page.data.length + 1}
-                  </p>
+                  <p>{nbPageIndex}</p>
                   <p>
                     <Link href={`/videos/${videoId}`}>
                       <a>
