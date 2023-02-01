@@ -108,13 +108,13 @@ const UserVideosInfos = () => {
                   </p>
                   <p>{title}</p>
                   <p>{description}</p>
-                  <p>
+                  <div>
                     <ActionPopover
                       videoId={videoId}
                       setIsShowingEditForm={setIsShowingEditForm}
                       setVideoToEditMetadata={setVideoToEditMetadata}
                     />
-                  </p>
+                  </div>
                 </ListItem>
 
                 {isShowingEditForm && videoToEditMetadata === videoId && (
