@@ -70,7 +70,6 @@ const UserVideosInfos = () => {
 
   useEffect(() => {
     if (userInfo && userInfo.userId) {
-      console.log(userInfo.userId);
       setUserId(userInfo.userId);
     }
   }, []);
@@ -90,7 +89,7 @@ const UserVideosInfos = () => {
             const { id, videoId, title, description, categoryId } = video;
             return (
               <>
-                <ListItem key={title} className={classes.listItem} divider>
+                <ListItem key={id} className={classes.listItem} divider>
                   <p>
                     {pageIndex === 0 ? index + 1 : index + page.data.length + 1}
                   </p>
@@ -127,7 +126,6 @@ const UserVideosInfos = () => {
                         onClick={handleClose}
                       >
                         <CloseIcon fontSize="inherit" color="error" />
-                        {/* Fermer */}
                       </IconButton>
                     </Stack>
                     <VideoMetadataEditForm

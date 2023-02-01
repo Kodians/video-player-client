@@ -7,11 +7,6 @@ let basePath = "/";
 let nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  images: {
-    loader: "imgix",
-    path: "https://beingdev.imgix.net/",
-    domains: ["beingdev.imgix.net", "i.ibb.co"],
-  },
   env: {
     NEXT_PUBLIC_API_URL: "http://localhost:3000",
   },
@@ -26,6 +21,11 @@ if (isGithubActions) {
 
   nextConfig = {
     ...nextConfig,
+    images: {
+      loader: "imgix",
+      path: "https://beingdev.imgix.net/",
+      domains: ["beingdev.imgix.net", "i.ibb.co"],
+    },
     assetPrefix: assetPrefix,
     basePath: basePath,
   };

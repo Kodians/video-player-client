@@ -4,7 +4,8 @@ import Image from "next/image";
 import { useState, useContext, useEffect } from "react";
 import { useRouter } from "next/router";
 import { Store } from "../utils/store";
-import { logo } from "../utils/constants";
+// import { logo } from "../utils/constants";
+import logo from "../assets/images/logo.png";
 import SearchBar from "../components/SearchBar";
 import jsCookie from "js-cookie";
 

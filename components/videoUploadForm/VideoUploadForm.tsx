@@ -167,7 +167,6 @@ export const VideoUploadForm = () => {
 
   useEffect(() => {
     if (userInfo && userInfo.userId) {
-      console.log(userInfo.userId);
       setUserId(userInfo.userId);
     }
 
