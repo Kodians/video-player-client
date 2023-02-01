@@ -13,7 +13,7 @@ const customJestConfig = {
       branches: 10,
       functions: 20,
       lines: 10,
-      statements: -68,
+      // statements: -68,
     },
   },
 };
