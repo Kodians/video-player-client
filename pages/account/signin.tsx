@@ -86,6 +86,7 @@ export default function SignIn() {
           </Typography>
           <Box
             component="form"
+            role={"form"}
             onSubmit={handleSubmit}
             noValidate
             sx={{ mt: 1 }}
