@@ -23,34 +23,36 @@ function UserProfile() {
     const largminWidth = useMediaQuery('(max-width:999px)')
 
     const { state }: any = React.useContext(Store);
-  const { userInfo } = state;
+    const { userInfo } = state;
 
-  const [userData, setUserData] = React.useState({
-    firstName: userInfo.firstName,
-    lastName: userInfo.lastName,
-    email: userInfo.email,
-    password:""
-  })
+    const [userData, setUserData] = React.useState({
+        firstName: userInfo?.firstName,
+        lastName: userInfo?.lastName,
+        email: userInfo?.email,
+        password: ""
+    })
 
-  const handleInputChange = (event:any) => {
-    setUserData((prevData: any) => {
-        return {...prevData, [event.target.name]:event.target.value
-    }})
-  }
+    const handleInputChange = (event: any) => {
+        setUserData((prevData: any) => {
+            return {
+                ...prevData, [event.target.name]: event.target.value
+            }
+        })
+    }
 
-  const editUserInfo = () => {
-    console.log(userData)
-  }
+    const editUserInfo = () => {
+        console.log(userData)
+    }
 
     React.useEffect(() => {
         setIsExtraSmallScreenSize(prevIsExtraSmallScreenSize => !prevIsExtraSmallScreenSize)
     }, [extraSmallScreen])
     return (
-        <div>
-            <Grid container alignItems='center' direction={extraSmallScreen ? "column-reverse":"row"} spacing={2} >
-                <Grid item style={extraSmallScreen ? { width:"100%" } : {} }  width={largminWidth ? "width: 720":"width: 520"}>
-                    <Card 
-                        elevation={0} style={{ backgroundColor: '#F4F4F2', width: extraSmallScreen ? "100%" : 500}} 
+        <div role="user-profile">
+            <Grid container alignItems='center' direction={extraSmallScreen ? "column-reverse" : "row"} spacing={2} >
+                <Grid  item style={extraSmallScreen ? { width: "100%" } : {}} width={largminWidth ? "width: 720" : "width: 520"}>
+                    <Card role="photo"
+                        elevation={0} style={{ backgroundColor: '#F4F4F2', width: extraSmallScreen ? "100%" : 500 }}
                         sx={{ width: '700px', height: '321px' }}
                     >
                         <Box sx={{ my: 1, mx: 2 }}>
@@ -86,8 +88,9 @@ function UserProfile() {
                         </div>
                     </Card>
                 </Grid>
+
                 <Grid item>
-                    <Card sx={{ width: '300px', height: '250px' }} elevation={0} style={{ margin: '15px 0', backgroundColor: '#F4F4F2', height: 'fit-content', width: largminWidth ? 720 :  '' }}>
+                    <Card role="recapProfile" sx={{ width: '300px', height: '250px' }} elevation={0} style={{ margin: '15px 0', backgroundColor: '#F4F4F2', height: 'fit-content', width: largminWidth ? 720 : '' }}>
                         <CardMedia
                             component="img"
                             height="140"
@@ -99,19 +102,19 @@ function UserProfile() {
                                 <Avatar alt="Photo" src="" sx={{ width: 90, height: 90, marginLeft: 'auto', marginRight: 'auto' }} />
                             </div>
                             <Typography gutterBottom variant="h6" component="div" style={{ marginTop: '10px' }}>
-                                Nom : {userInfo.lastName}
+                                Nom : {userInfo?.lastName}
                                 <br />
-                                Prenom : { userInfo.firstName}
+                                Prenom : {userInfo?.firstName}
                                 <br />
-                                Email: { userInfo.email }
+                                Email: {userInfo?.email}
                             </Typography>
                         </CardContent>
-                </Card>
+                    </Card>
                 </Grid>
             </Grid>
-            <Grid container  width={largminWidth ? "width: 720":"width: 720"}>
-                <Grid item style={largeWidth ? {width:820} : {width:720 }}>
-                <Card elevation={0} style={{ margin: '15px 0', backgroundColor: '#F4F4F2' }}>
+            <Grid container width={largminWidth ? "width: 720" : "width: 720"}>
+                <Grid item style={largeWidth ? { width: 820 } : { width: 720 }}>
+                    <Card role="informationProfile" elevation={0} style={{ margin: '15px 0', backgroundColor: '#F4F4F2' }}>
                         <Box sx={{ my: 3, mx: 2 }}>
                             <Grid container alignItems="center">
                                 <Grid item xs>
@@ -135,6 +138,7 @@ function UserProfile() {
                                 <Box>
                                     <TextField
                                         id="outlined-required"
+                                        role="fristname"
                                         label="First Name"
                                         name="firstName"
                                         value={userData.firstName}
@@ -145,6 +149,7 @@ function UserProfile() {
                                     <TextField
                                         id="outlined-password-input"
                                         label="Last Name"
+                                        role="lastname"
                                         name='lastName'
                                         value={userData.lastName}
                                         onChange={handleInputChange}
@@ -153,7 +158,7 @@ function UserProfile() {
                                     />
                                 </Box>
                                 <Box>
-                            
+
                                     <TextField
                                         id="outlined-read-only-input"
                                         label="Password"
@@ -167,11 +172,12 @@ function UserProfile() {
                                     <TextField
                                         id="outlined-number"
                                         label="Adresse email"
+                                        /* role="adressmail" */
                                         type="email"
                                         name="name"
                                         value={userData.email}
                                         onChange={handleInputChange}
-                                        defaultValue="email@gmail.com"
+                                        /* defaultValue="email@gmail.com" */
                                         fullWidth
                                     />
                                 </Box>
