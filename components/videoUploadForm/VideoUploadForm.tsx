@@ -1,13 +1,19 @@
-import { useState, ChangeEvent, useEffect, useCallback } from "react";
+import {
+  useState,
+  ChangeEvent,
+  useEffect,
+  useCallback,
+  useContext,
+} from "react";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import { Grid, TextareaAutosize, Button } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { useFetch } from "../../hooks/useFetch";
 import { useInsert } from "../../hooks/useInsert";
-import tokenService from "../../services/token.service";
 import Alert from "@mui/material/Alert";
 import { LoadingBackdrop } from "../LoadingBackDrop";
+import { Store } from "../../utils/store";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -24,9 +30,12 @@ const useStyles = makeStyles(() => ({
 
 export const VideoUploadForm = () => {
   const classes = useStyles();
+  const {
+    state: { userInfo },
+  }: any = useContext(Store);
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
-  const [categoryId, setcategoryId] = useState<string>("Choisir une catégorie");
+  const [categoryId, setcategoryId] = useState<string>();
   const [video, setVideo] = useState<File>();
   const [videoThumbnail, setVideoThumbnail] = useState<File>();
   const [userId, setUserId] = useState<string>();
@@ -74,51 +83,38 @@ export const VideoUploadForm = () => {
   const saveVideo = () => {
     if (userId !== undefined && userId !== null) {
       if (
+        title !== undefined &&
+        title !== null &&
+        title !== "" &&
+        description !== undefined &&
+        description !== null &&
+        description !== "" &&
+        categoryId !== undefined &&
+        categoryId !== null &&
+        categoryId !== "" &&
         video !== undefined &&
         video !== null &&
         videoThumbnail !== undefined &&
         videoThumbnail !== null
       ) {
-        if (
-          title !== undefined &&
-          title !== null &&
-          title !== "" &&
-          description !== undefined &&
-          description !== null &&
-          description !== "" &&
-          categoryId !== undefined &&
-          categoryId !== null &&
-          categoryId !== "Choisir une catégorie"
-        ) {
-          const videoForm = new FormData();
-          videoForm.append("file", video);
-          insertVideo({
-            data: videoForm,
-            options: {
-              headers: {
-                "Content-Type": "multipart/form-data",
-              },
-              params: { title, description, categoryId },
+        const videoForm = new FormData();
+        videoForm.append("file", video);
+        insertVideo({
+          data: videoForm,
+          options: {
+            headers: {
+              "Content-Type": "multipart/form-data",
             },
-          });
-          setIsFireUploadThumbnail(true);
-        } else {
-          setAlert("Veuillez remplir tous les champs");
-          setTimeout(() => {
-            setAlert("");
-          }, 3000);
-        }
+            params: { title, description, categoryId },
+          },
+        });
+        setIsFireUploadThumbnail(true);
       } else {
-        setAlert("Veuillez choisir une video et une miniature");
+        setAlert("Veuillez remplir tous les champs");
         setTimeout(() => {
           setAlert("");
         }, 3000);
       }
-    } else {
-      setAlert("Vous devez être connecté pour publier une vidéo");
-      setTimeout(() => {
-        setAlert("");
-      }, 3000);
     }
   };
 
@@ -127,7 +123,6 @@ export const VideoUploadForm = () => {
       if (
         categoryId !== undefined &&
         categoryId !== null &&
-        categoryId !== "Choisir une catégorie" &&
         description !== undefined &&
         description !== null &&
         title !== undefined &&
@@ -171,9 +166,8 @@ export const VideoUploadForm = () => {
   ]);
 
   useEffect(() => {
-    const user = tokenService.getUser();
-    if (user && user.userId) {
-      setUserId(user.userId);
+    if (userInfo && userInfo.userId) {
+      setUserId(userInfo.userId);
     }
 
     // insert video thumbnail after video is inserted
@@ -192,7 +186,7 @@ export const VideoUploadForm = () => {
   }
 
   return (
-    <div className={classes.root}>
+    <div className={classes.root} role="video-upload-form">
       <Grid
         container
         flexDirection="column"
@@ -222,8 +216,8 @@ export const VideoUploadForm = () => {
               sx={{ width: "100% !important" }}
               id="outlined-select-categoryId"
               select
-              label="Catégorie"
-              value={categoryId}
+              label="Choisir une catégorie"
+              value={categoryId || ""}
               onChange={handleCategoryIdChange}
             >
               {data?.data?.categories.map((categoryId: any) => {
@@ -239,23 +233,25 @@ export const VideoUploadForm = () => {
         </Grid>
         <Grid item container spacing={2}>
           <Grid item xs={12} sm={6}>
-            <label htmlFor="contained-button-file">Charger la vidéo</label>
+            <label htmlFor="upload-video-file">Charger la vidéo</label>
             <br />
             <input
               accept="video/*"
-              id="contained-button-file"
+              id="upload-video-file"
               type="file"
+              role={"upload-video-file"}
               onChange={handleVideoUpload}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <label htmlFor="contained-button-file">
+            <label htmlFor="upload-video-thumbnail-file">
               Charger la photo de couverture
-            </label>{" "}
+            </label>
             <br />
             <input
               accept="image/*"
-              id="contained-button-file"
+              id="upload-video-thumbnail-file"
+              role="upload-video-thumbnail-file"
               type="file"
               onChange={handleVideoThumbnailUpload}
             />

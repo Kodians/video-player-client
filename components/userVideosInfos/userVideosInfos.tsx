@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState, useContext } from "react";
 import { List, ListItem } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { IconButton, Stack } from "@mui/material";
@@ -8,9 +8,9 @@ import videoIcon from "../../assets/images/video.svg";
 import React from "react";
 import { ActionPopover } from "./ActionPopover";
 import Link from "next/link";
-import tokenService from "../../services/token.service";
 import { useInfiniteFetch } from "../../hooks/useInfiniteFetch";
 import { VideoMetadataEditForm } from "../videoUploadForm/VideoMetadataEditForm";
+import { Store } from "../../utils/store";
 
 const useStyles = makeStyles(() => ({
   listItem: {
@@ -34,10 +34,14 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
+let nbPageIndex = 0;
 const UserVideosInfos = () => {
   const classes = useStyles();
-
-  const [userId, setUserId] = React.useState<string>();
+  const {
+    state: { userInfo },
+  }: any = useContext(Store);
+  const [userId, setUserId] = useState<string>();
+  const [numberOfPages, setNumberOfPages] = useState<number>(4);
 
   const {
     data,
@@ -52,25 +56,23 @@ const UserVideosInfos = () => {
     enabled: !!userId,
     staleTime: Infinity,
     getNextPageParam: (_lastPage: any, pages: any) => {
-      if (pages.length < 4) {
+      if (pages.length < numberOfPages) {
         return pages.length + 1;
       }
       return undefined;
     },
   });
 
-  const [isShowingEditForm, setIsShowingEditForm] =
-    React.useState<boolean>(false);
-  const [videoToEditMetadata, setVideoToEditMetadata] = React.useState<any>();
+  const [isShowingEditForm, setIsShowingEditForm] = useState<boolean>(false);
+  const [videoToEditMetadata, setVideoToEditMetadata] = useState<any>();
 
   const handleClose = () => {
     setIsShowingEditForm(false);
   };
 
   useEffect(() => {
-    const user = tokenService.getUser();
-    if (user && user.userId) {
-      setUserId(user.userId);
+    if (userInfo && userInfo.userId) {
+      setUserId(userInfo.userId);
     }
   }, []);
 
@@ -81,16 +83,20 @@ const UserVideosInfos = () => {
     return <h2>{error instanceof Error && error.message}</h2>;
   }
 
+  console.log(data?.pages);
+
   return (
     <>
       <List>
-        {data?.pages.map((page: any) => {
+        {data?.pages.map((page: any, pageIndex: number) => {
+          let nbPageIndex = 0;
           return page.data.map((video: any, index: any) => {
-            const { id, videoId, title, description } = video;
+            nbPageIndex = pageIndex * numberOfPages + index + 1;
+            const { id, videoId, title, description, categoryId } = video;
             return (
               <>
-                <ListItem key={title} className={classes.listItem} divider>
-                  <p>{index + 1}</p>
+                <ListItem key={id} className={classes.listItem} divider>
+                  <p>{nbPageIndex}</p>
                   <p>
                     <Link href={`/videos/${videoId}`}>
                       <a>
@@ -106,13 +112,13 @@ const UserVideosInfos = () => {
                   </p>
                   <p>{title}</p>
                   <p>{description}</p>
-                  <p>
+                  <div>
                     <ActionPopover
                       videoId={videoId}
                       setIsShowingEditForm={setIsShowingEditForm}
                       setVideoToEditMetadata={setVideoToEditMetadata}
                     />
-                  </p>
+                  </div>
                 </ListItem>
 
                 {isShowingEditForm && videoToEditMetadata === videoId && (
@@ -123,8 +129,7 @@ const UserVideosInfos = () => {
                         size="medium"
                         onClick={handleClose}
                       >
-                        <CloseIcon fontSize="inherit" />
-                        Fermer
+                        <CloseIcon fontSize="inherit" color="error" />
                       </IconButton>
                     </Stack>
                     <VideoMetadataEditForm
@@ -134,6 +139,7 @@ const UserVideosInfos = () => {
                         userId,
                         videoId,
                         id,
+                        categoryId,
                       }}
                       setIsShowingEditForm={setIsShowingEditForm}
                     />
