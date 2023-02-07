@@ -14,6 +14,7 @@ import { useInsert } from "../../hooks/useInsert";
 import Alert from "@mui/material/Alert";
 import { LoadingBackdrop } from "../LoadingBackDrop";
 import { Store } from "../../utils/store";
+import { useQueryClient } from "react-query";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -41,6 +42,8 @@ export const VideoUploadForm = () => {
   const [userId, setUserId] = useState<string>();
   const [alert, setAlert] = useState<string>();
 
+  const queryClient = useQueryClient();
+
   const { data } = useFetch("/categories", {
     staleTime: Infinity,
   });
@@ -52,7 +55,19 @@ export const VideoUploadForm = () => {
   } = useInsert(`/user/${userId}/videos`);
   const { mutate: insertThumbnail, isLoading: isVideoThumbnailUploadLoading } =
     useInsert(
-      `/user/${userId}/videos/${insertedVideo?.data.lastUploadedFileId}/thumbnail`
+      `/user/${userId}/videos/${insertedVideo?.data.lastUploadedFileId}/thumbnail`,
+      {
+        onSuccess: () => {
+          setAlert("La vidéo a été téléchargée avec succès");
+          setTimeout(() => {
+            setAlert("");
+          }, 3000);
+          // get all query keys
+          const queryKeys = queryClient.invalidateQueries(
+            `/user/${userId}/videos`
+          );
+        },
+      }
     );
 
   const [isFireUploadThumbnail, setIsFireUploadThumbnail] =
